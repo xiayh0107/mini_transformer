@@ -1,0 +1,6 @@
+# Core dependencies
+torch>=2.1.0
+numpy>=1.23
+
+# Developer tooling
+pytest>=7.4

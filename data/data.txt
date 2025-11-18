@@ -1,0 +1,2439 @@
+# =============== 挑战任务：复杂映射 ===============
+# 难度：⭐⭐⭐⭐
+# 规则：a->3, b->1, c->2（非线性映射，需要记忆）
+a b c	3 1 2
+b a c	1 3 2
+c a b	2 3 1
+a c b	3 2 1
+b c a	1 2 3
+c b a	2 1 3
+c b	2 1
+
+# =============== 自动生成的扩展数据 ===============
+a	3
+b	1
+c	2
+a b	3 1
+a c	3 2
+b a	1 3
+b c	1 2
+c a	2 3
+
+
+# =============== 数据增强：自动生成的扩展数据 ===============
+a a	3 3
+b b	1 1
+c c	2 2
+
+# =============== 数据增强：自动生成的扩展数据 ===============
+a a a	3 3 3
+b b b	1 1 1
+c c c	2 2 2
+a b a b	3 1 3 1
+b c b c	1 2 1 2
+c a c a	2 3 2 3
+a b c a b c	3 1 2 3 1 2
+a b a	3 1 3
+b c b	1 2 1
+c a c	2 3 2
+a b c b a	3 1 2 1 3
+b c a c b	1 2 3 2 1
+
+# =============== 数据增强：自动生成的扩展数据 ===============
+a a b	3 3 1
+a a c	3 3 2
+a b b	3 1 1
+a c a	3 2 3
+a c c	3 2 2
+b a a	1 3 3
+b a b	1 3 1
+b b a	1 1 3
+b b c	1 1 2
+b c c	1 2 2
+c a a	2 3 3
+c b b	2 1 1
+c b c	2 1 2
+c c a	2 2 3
+c c b	2 2 1
+a a a a	3 3 3 3
+b b b b	1 1 1 1
+c c c c	2 2 2 2
+a a b b	3 3 1 1
+b b c c	1 1 2 2
+c c a a	2 2 3 3
+a b c a	3 1 2 3
+b c a b	1 2 3 1
+c a b c	2 3 1 2
+a c b a	3 2 1 3
+
+# =============== 数据增强：自动生成的扩展数据 ===============
+a a a b	3 3 3 1
+a a a c	3 3 3 2
+a a b a	3 3 1 3
+a a b c	3 3 1 2
+a a c a	3 3 2 3
+a a c b	3 3 2 1
+a a c c	3 3 2 2
+a b a a	3 1 3 3
+a b a c	3 1 3 2
+a b b a	3 1 1 3
+a b b b	3 1 1 1
+a b b c	3 1 1 2
+a b c b	3 1 2 1
+a b c c	3 1 2 2
+a c a a	3 2 3 3
+a c a b	3 2 3 1
+a c a c	3 2 3 2
+a c b b	3 2 1 1
+a c b c	3 2 1 2
+a c c a	3 2 2 3
+a c c b	3 2 2 1
+a c c c	3 2 2 2
+b a a a	1 3 3 3
+b a a b	1 3 3 1
+b a a c	1 3 3 2
+b a b a	1 3 1 3
+b a b b	1 3 1 1
+b a b c	1 3 1 2
+b a c a	1 3 2 3
+b a c b	1 3 2 1
+b a c c	1 3 2 2
+b b a a	1 1 3 3
+b b a b	1 1 3 1
+b b a c	1 1 3 2
+b b b a	1 1 1 3
+b b b c	1 1 1 2
+b b c a	1 1 2 3
+b b c b	1 1 2 1
+b c a a	1 2 3 3
+b c a c	1 2 3 2
+b c b a	1 2 1 3
+b c b b	1 2 1 1
+b c c a	1 2 2 3
+b c c b	1 2 2 1
+b c c c	1 2 2 2
+c a a a	2 3 3 3
+c a a b	2 3 3 1
+c a a c	2 3 3 2
+c a b a	2 3 1 3
+c a b b	2 3 1 1
+c a c b	2 3 2 1
+c a c c	2 3 2 2
+c b a a	2 1 3 3
+c b a b	2 1 3 1
+c b a c	2 1 3 2
+c b b a	2 1 1 3
+c b b b	2 1 1 1
+c b b c	2 1 1 2
+c b c a	2 1 2 3
+c b c b	2 1 2 1
+c b c c	2 1 2 2
+c c a b	2 2 3 1
+c c a c	2 2 3 2
+c c b a	2 2 1 3
+c c b b	2 2 1 1
+c c b c	2 2 1 2
+c c c a	2 2 2 3
+c c c b	2 2 2 1
+a a a a a	3 3 3 3 3
+a a a a b	3 3 3 3 1
+a a a a c	3 3 3 3 2
+a a a b a	3 3 3 1 3
+a a a b b	3 3 3 1 1
+a a a b c	3 3 3 1 2
+a a a c a	3 3 3 2 3
+a a a c b	3 3 3 2 1
+a a a c c	3 3 3 2 2
+a a b a a	3 3 1 3 3
+a a b a b	3 3 1 3 1
+a a b a c	3 3 1 3 2
+a a b b a	3 3 1 1 3
+a a b b b	3 3 1 1 1
+a a b b c	3 3 1 1 2
+a a b c a	3 3 1 2 3
+a a b c b	3 3 1 2 1
+a a b c c	3 3 1 2 2
+a a c a a	3 3 2 3 3
+a a c a b	3 3 2 3 1
+a a c a c	3 3 2 3 2
+a a c b a	3 3 2 1 3
+a a c b b	3 3 2 1 1
+a a c b c	3 3 2 1 2
+a a c c a	3 3 2 2 3
+a a c c b	3 3 2 2 1
+a a c c c	3 3 2 2 2
+a b a a a	3 1 3 3 3
+a b a a b	3 1 3 3 1
+a b a a c	3 1 3 3 2
+a b a b a	3 1 3 1 3
+a b a b b	3 1 3 1 1
+a b a b c	3 1 3 1 2
+a b a c a	3 1 3 2 3
+a b a c b	3 1 3 2 1
+a b a c c	3 1 3 2 2
+a b b a a	3 1 1 3 3
+a b b a b	3 1 1 3 1
+a b b a c	3 1 1 3 2
+a b b b a	3 1 1 1 3
+a b b b b	3 1 1 1 1
+a b b b c	3 1 1 1 2
+a b b c a	3 1 1 2 3
+a b b c b	3 1 1 2 1
+a b b c c	3 1 1 2 2
+a b c a a	3 1 2 3 3
+a b c a b	3 1 2 3 1
+a b c a c	3 1 2 3 2
+a b c b b	3 1 2 1 1
+a b c b c	3 1 2 1 2
+a b c c a	3 1 2 2 3
+a b c c b	3 1 2 2 1
+a b c c c	3 1 2 2 2
+a c a a a	3 2 3 3 3
+a c a a b	3 2 3 3 1
+a c a a c	3 2 3 3 2
+a c a b a	3 2 3 1 3
+a c a b b	3 2 3 1 1
+a c a b c	3 2 3 1 2
+a c a c a	3 2 3 2 3
+a c a c b	3 2 3 2 1
+a c a c c	3 2 3 2 2
+a c b a a	3 2 1 3 3
+a c b a b	3 2 1 3 1
+a c b a c	3 2 1 3 2
+a c b b a	3 2 1 1 3
+a c b b b	3 2 1 1 1
+a c b b c	3 2 1 1 2
+a c b c a	3 2 1 2 3
+a c b c b	3 2 1 2 1
+a c b c c	3 2 1 2 2
+a c c a a	3 2 2 3 3
+a c c a b	3 2 2 3 1
+a c c a c	3 2 2 3 2
+a c c b a	3 2 2 1 3
+a c c b b	3 2 2 1 1
+a c c b c	3 2 2 1 2
+a c c c a	3 2 2 2 3
+a c c c b	3 2 2 2 1
+a c c c c	3 2 2 2 2
+b a a a a	1 3 3 3 3
+b a a a b	1 3 3 3 1
+b a a a c	1 3 3 3 2
+b a a b a	1 3 3 1 3
+b a a b b	1 3 3 1 1
+b a a b c	1 3 3 1 2
+b a a c a	1 3 3 2 3
+b a a c b	1 3 3 2 1
+b a a c c	1 3 3 2 2
+b a b a a	1 3 1 3 3
+b a b a b	1 3 1 3 1
+b a b a c	1 3 1 3 2
+b a b b a	1 3 1 1 3
+b a b b b	1 3 1 1 1
+b a b b c	1 3 1 1 2
+b a b c a	1 3 1 2 3
+b a b c b	1 3 1 2 1
+b a b c c	1 3 1 2 2
+b a c a a	1 3 2 3 3
+b a c a b	1 3 2 3 1
+b a c a c	1 3 2 3 2
+b a c b a	1 3 2 1 3
+b a c b b	1 3 2 1 1
+b a c b c	1 3 2 1 2
+b a c c a	1 3 2 2 3
+b a c c b	1 3 2 2 1
+b a c c c	1 3 2 2 2
+b b a a a	1 1 3 3 3
+b b a a b	1 1 3 3 1
+b b a a c	1 1 3 3 2
+b b a b a	1 1 3 1 3
+b b a b b	1 1 3 1 1
+b b a b c	1 1 3 1 2
+b b a c a	1 1 3 2 3
+b b a c b	1 1 3 2 1
+b b a c c	1 1 3 2 2
+b b b a a	1 1 1 3 3
+b b b a b	1 1 1 3 1
+b b b a c	1 1 1 3 2
+b b b b a	1 1 1 1 3
+b b b b b	1 1 1 1 1
+b b b b c	1 1 1 1 2
+b b b c a	1 1 1 2 3
+b b b c b	1 1 1 2 1
+b b b c c	1 1 1 2 2
+b b c a a	1 1 2 3 3
+b b c a b	1 1 2 3 1
+b b c a c	1 1 2 3 2
+b b c b a	1 1 2 1 3
+b b c b b	1 1 2 1 1
+b b c b c	1 1 2 1 2
+b b c c a	1 1 2 2 3
+b b c c b	1 1 2 2 1
+b b c c c	1 1 2 2 2
+b c a a a	1 2 3 3 3
+b c a a b	1 2 3 3 1
+b c a a c	1 2 3 3 2
+b c a b a	1 2 3 1 3
+b c a b b	1 2 3 1 1
+b c a b c	1 2 3 1 2
+b c a c a	1 2 3 2 3
+b c a c c	1 2 3 2 2
+b c b a a	1 2 1 3 3
+b c b a b	1 2 1 3 1
+b c b a c	1 2 1 3 2
+b c b b a	1 2 1 1 3
+b c b b b	1 2 1 1 1
+b c b b c	1 2 1 1 2
+b c b c a	1 2 1 2 3
+b c b c b	1 2 1 2 1
+b c b c c	1 2 1 2 2
+b c c a a	1 2 2 3 3
+b c c a b	1 2 2 3 1
+b c c a c	1 2 2 3 2
+b c c b a	1 2 2 1 3
+b c c b b	1 2 2 1 1
+b c c b c	1 2 2 1 2
+b c c c a	1 2 2 2 3
+b c c c b	1 2 2 2 1
+b c c c c	1 2 2 2 2
+c a a a a	2 3 3 3 3
+c a a a b	2 3 3 3 1
+c a a a c	2 3 3 3 2
+c a a b a	2 3 3 1 3
+c a a b b	2 3 3 1 1
+c a a b c	2 3 3 1 2
+c a a c a	2 3 3 2 3
+c a a c b	2 3 3 2 1
+c a a c c	2 3 3 2 2
+c a b a a	2 3 1 3 3
+c a b a b	2 3 1 3 1
+c a b a c	2 3 1 3 2
+c a b b a	2 3 1 1 3
+c a b b b	2 3 1 1 1
+c a b b c	2 3 1 1 2
+c a b c a	2 3 1 2 3
+c a b c b	2 3 1 2 1
+c a b c c	2 3 1 2 2
+c a c a a	2 3 2 3 3
+c a c a b	2 3 2 3 1
+c a c a c	2 3 2 3 2
+c a c b a	2 3 2 1 3
+c a c b b	2 3 2 1 1
+c a c b c	2 3 2 1 2
+c a c c a	2 3 2 2 3
+c a c c b	2 3 2 2 1
+c a c c c	2 3 2 2 2
+c b a a a	2 1 3 3 3
+c b a a b	2 1 3 3 1
+c b a a c	2 1 3 3 2
+c b a b a	2 1 3 1 3
+c b a b b	2 1 3 1 1
+c b a b c	2 1 3 1 2
+c b a c a	2 1 3 2 3
+c b a c b	2 1 3 2 1
+c b a c c	2 1 3 2 2
+c b b a a	2 1 1 3 3
+c b b a b	2 1 1 3 1
+c b b a c	2 1 1 3 2
+c b b b a	2 1 1 1 3
+c b b b b	2 1 1 1 1
+c b b b c	2 1 1 1 2
+c b b c a	2 1 1 2 3
+c b b c b	2 1 1 2 1
+c b b c c	2 1 1 2 2
+c b c a a	2 1 2 3 3
+c b c a b	2 1 2 3 1
+c b c a c	2 1 2 3 2
+c b c b a	2 1 2 1 3
+c b c b b	2 1 2 1 1
+c b c b c	2 1 2 1 2
+c b c c a	2 1 2 2 3
+c b c c b	2 1 2 2 1
+c b c c c	2 1 2 2 2
+c c a a a	2 2 3 3 3
+c c a a b	2 2 3 3 1
+c c a a c	2 2 3 3 2
+c c a b a	2 2 3 1 3
+c c a b b	2 2 3 1 1
+c c a b c	2 2 3 1 2
+c c a c a	2 2 3 2 3
+c c a c b	2 2 3 2 1
+c c a c c	2 2 3 2 2
+c c b a a	2 2 1 3 3
+c c b a b	2 2 1 3 1
+c c b a c	2 2 1 3 2
+c c b b a	2 2 1 1 3
+c c b b b	2 2 1 1 1
+c c b b c	2 2 1 1 2
+c c b c a	2 2 1 2 3
+c c b c b	2 2 1 2 1
+c c b c c	2 2 1 2 2
+c c c a a	2 2 2 3 3
+c c c a b	2 2 2 3 1
+c c c a c	2 2 2 3 2
+c c c b a	2 2 2 1 3
+c c c b b	2 2 2 1 1
+c c c b c	2 2 2 1 2
+c c c c a	2 2 2 2 3
+c c c c b	2 2 2 2 1
+c c c c c	2 2 2 2 2
+a a a a a a	3 3 3 3 3 3
+a a a a a b	3 3 3 3 3 1
+a a a a a c	3 3 3 3 3 2
+a a a a b a	3 3 3 3 1 3
+a a a a b b	3 3 3 3 1 1
+a a a a b c	3 3 3 3 1 2
+a a a a c a	3 3 3 3 2 3
+a a a a c b	3 3 3 3 2 1
+a a a a c c	3 3 3 3 2 2
+a a a b a a	3 3 3 1 3 3
+a a a b a b	3 3 3 1 3 1
+a a a b a c	3 3 3 1 3 2
+a a a b b a	3 3 3 1 1 3
+a a a b b b	3 3 3 1 1 1
+a a a b b c	3 3 3 1 1 2
+a a a b c a	3 3 3 1 2 3
+a a a b c b	3 3 3 1 2 1
+a a a b c c	3 3 3 1 2 2
+a a a c a a	3 3 3 2 3 3
+a a a c a b	3 3 3 2 3 1
+a a a c a c	3 3 3 2 3 2
+a a a c b a	3 3 3 2 1 3
+a a a c b b	3 3 3 2 1 1
+a a a c b c	3 3 3 2 1 2
+a a a c c a	3 3 3 2 2 3
+a a a c c b	3 3 3 2 2 1
+a a a c c c	3 3 3 2 2 2
+a a b a a a	3 3 1 3 3 3
+a a b a a b	3 3 1 3 3 1
+a a b a a c	3 3 1 3 3 2
+a a b a b a	3 3 1 3 1 3
+a a b a b b	3 3 1 3 1 1
+a a b a b c	3 3 1 3 1 2
+a a b a c a	3 3 1 3 2 3
+a a b a c b	3 3 1 3 2 1
+a a b a c c	3 3 1 3 2 2
+a a b b a a	3 3 1 1 3 3
+a a b b a b	3 3 1 1 3 1
+a a b b a c	3 3 1 1 3 2
+a a b b b a	3 3 1 1 1 3
+a a b b b b	3 3 1 1 1 1
+a a b b b c	3 3 1 1 1 2
+a a b b c a	3 3 1 1 2 3
+a a b b c b	3 3 1 1 2 1
+a a b b c c	3 3 1 1 2 2
+a a b c a a	3 3 1 2 3 3
+a a b c a b	3 3 1 2 3 1
+a a b c a c	3 3 1 2 3 2
+a a b c b a	3 3 1 2 1 3
+a a b c b b	3 3 1 2 1 1
+a a b c b c	3 3 1 2 1 2
+a a b c c a	3 3 1 2 2 3
+a a b c c b	3 3 1 2 2 1
+a a b c c c	3 3 1 2 2 2
+a a c a a a	3 3 2 3 3 3
+a a c a a b	3 3 2 3 3 1
+a a c a a c	3 3 2 3 3 2
+a a c a b a	3 3 2 3 1 3
+a a c a b b	3 3 2 3 1 1
+a a c a b c	3 3 2 3 1 2
+a a c a c a	3 3 2 3 2 3
+a a c a c b	3 3 2 3 2 1
+a a c a c c	3 3 2 3 2 2
+a a c b a a	3 3 2 1 3 3
+a a c b a b	3 3 2 1 3 1
+a a c b a c	3 3 2 1 3 2
+a a c b b a	3 3 2 1 1 3
+a a c b b b	3 3 2 1 1 1
+a a c b b c	3 3 2 1 1 2
+a a c b c a	3 3 2 1 2 3
+a a c b c b	3 3 2 1 2 1
+a a c b c c	3 3 2 1 2 2
+a a c c a a	3 3 2 2 3 3
+a a c c a b	3 3 2 2 3 1
+a a c c a c	3 3 2 2 3 2
+a a c c b a	3 3 2 2 1 3
+a a c c b b	3 3 2 2 1 1
+a a c c b c	3 3 2 2 1 2
+a a c c c a	3 3 2 2 2 3
+a a c c c b	3 3 2 2 2 1
+a a c c c c	3 3 2 2 2 2
+a b a a a a	3 1 3 3 3 3
+a b a a a b	3 1 3 3 3 1
+a b a a a c	3 1 3 3 3 2
+a b a a b a	3 1 3 3 1 3
+a b a a b b	3 1 3 3 1 1
+a b a a b c	3 1 3 3 1 2
+a b a a c a	3 1 3 3 2 3
+a b a a c b	3 1 3 3 2 1
+a b a a c c	3 1 3 3 2 2
+a b a b a a	3 1 3 1 3 3
+a b a b a b	3 1 3 1 3 1
+a b a b a c	3 1 3 1 3 2
+a b a b b a	3 1 3 1 1 3
+a b a b b b	3 1 3 1 1 1
+a b a b b c	3 1 3 1 1 2
+a b a b c a	3 1 3 1 2 3
+a b a b c b	3 1 3 1 2 1
+a b a b c c	3 1 3 1 2 2
+a b a c a a	3 1 3 2 3 3
+a b a c a b	3 1 3 2 3 1
+a b a c a c	3 1 3 2 3 2
+a b a c b a	3 1 3 2 1 3
+a b a c b b	3 1 3 2 1 1
+a b a c b c	3 1 3 2 1 2
+a b a c c a	3 1 3 2 2 3
+a b a c c b	3 1 3 2 2 1
+a b a c c c	3 1 3 2 2 2
+a b b a a a	3 1 1 3 3 3
+a b b a a b	3 1 1 3 3 1
+a b b a a c	3 1 1 3 3 2
+a b b a b a	3 1 1 3 1 3
+a b b a b b	3 1 1 3 1 1
+a b b a b c	3 1 1 3 1 2
+a b b a c a	3 1 1 3 2 3
+a b b a c b	3 1 1 3 2 1
+a b b a c c	3 1 1 3 2 2
+a b b b a a	3 1 1 1 3 3
+a b b b a b	3 1 1 1 3 1
+a b b b a c	3 1 1 1 3 2
+a b b b b a	3 1 1 1 1 3
+a b b b b b	3 1 1 1 1 1
+a b b b b c	3 1 1 1 1 2
+a b b b c a	3 1 1 1 2 3
+a b b b c b	3 1 1 1 2 1
+a b b b c c	3 1 1 1 2 2
+a b b c a a	3 1 1 2 3 3
+a b b c a b	3 1 1 2 3 1
+a b b c a c	3 1 1 2 3 2
+a b b c b a	3 1 1 2 1 3
+a b b c b b	3 1 1 2 1 1
+a b b c b c	3 1 1 2 1 2
+a b b c c a	3 1 1 2 2 3
+a b b c c b	3 1 1 2 2 1
+a b b c c c	3 1 1 2 2 2
+a b c a a a	3 1 2 3 3 3
+a b c a a b	3 1 2 3 3 1
+a b c a a c	3 1 2 3 3 2
+a b c a b a	3 1 2 3 1 3
+a b c a b b	3 1 2 3 1 1
+a b c a c a	3 1 2 3 2 3
+a b c a c b	3 1 2 3 2 1
+a b c a c c	3 1 2 3 2 2
+a b c b a a	3 1 2 1 3 3
+a b c b a b	3 1 2 1 3 1
+a b c b a c	3 1 2 1 3 2
+a b c b b a	3 1 2 1 1 3
+a b c b b b	3 1 2 1 1 1
+a b c b b c	3 1 2 1 1 2
+a b c b c a	3 1 2 1 2 3
+a b c b c b	3 1 2 1 2 1
+a b c b c c	3 1 2 1 2 2
+a b c c a a	3 1 2 2 3 3
+a b c c a b	3 1 2 2 3 1
+a b c c a c	3 1 2 2 3 2
+a b c c b a	3 1 2 2 1 3
+a b c c b b	3 1 2 2 1 1
+a b c c b c	3 1 2 2 1 2
+a b c c c a	3 1 2 2 2 3
+a b c c c b	3 1 2 2 2 1
+a b c c c c	3 1 2 2 2 2
+a c a a a a	3 2 3 3 3 3
+a c a a a b	3 2 3 3 3 1
+a c a a a c	3 2 3 3 3 2
+a c a a b a	3 2 3 3 1 3
+a c a a b b	3 2 3 3 1 1
+a c a a b c	3 2 3 3 1 2
+a c a a c a	3 2 3 3 2 3
+a c a a c b	3 2 3 3 2 1
+a c a a c c	3 2 3 3 2 2
+a c a b a a	3 2 3 1 3 3
+a c a b a b	3 2 3 1 3 1
+a c a b a c	3 2 3 1 3 2
+a c a b b a	3 2 3 1 1 3
+a c a b b b	3 2 3 1 1 1
+a c a b b c	3 2 3 1 1 2
+a c a b c a	3 2 3 1 2 3
+a c a b c b	3 2 3 1 2 1
+a c a b c c	3 2 3 1 2 2
+a c a c a a	3 2 3 2 3 3
+a c a c a b	3 2 3 2 3 1
+a c a c a c	3 2 3 2 3 2
+a c a c b a	3 2 3 2 1 3
+a c a c b b	3 2 3 2 1 1
+a c a c b c	3 2 3 2 1 2
+a c a c c a	3 2 3 2 2 3
+a c a c c b	3 2 3 2 2 1
+a c a c c c	3 2 3 2 2 2
+a c b a a a	3 2 1 3 3 3
+a c b a a b	3 2 1 3 3 1
+a c b a a c	3 2 1 3 3 2
+a c b a b a	3 2 1 3 1 3
+a c b a b b	3 2 1 3 1 1
+a c b a b c	3 2 1 3 1 2
+a c b a c a	3 2 1 3 2 3
+a c b a c b	3 2 1 3 2 1
+a c b a c c	3 2 1 3 2 2
+a c b b a a	3 2 1 1 3 3
+a c b b a b	3 2 1 1 3 1
+a c b b a c	3 2 1 1 3 2
+a c b b b a	3 2 1 1 1 3
+a c b b b b	3 2 1 1 1 1
+a c b b b c	3 2 1 1 1 2
+a c b b c a	3 2 1 1 2 3
+a c b b c b	3 2 1 1 2 1
+a c b b c c	3 2 1 1 2 2
+a c b c a a	3 2 1 2 3 3
+a c b c a b	3 2 1 2 3 1
+a c b c a c	3 2 1 2 3 2
+a c b c b a	3 2 1 2 1 3
+a c b c b b	3 2 1 2 1 1
+a c b c b c	3 2 1 2 1 2
+a c b c c a	3 2 1 2 2 3
+a c b c c b	3 2 1 2 2 1
+a c b c c c	3 2 1 2 2 2
+a c c a a a	3 2 2 3 3 3
+a c c a a b	3 2 2 3 3 1
+a c c a a c	3 2 2 3 3 2
+a c c a b a	3 2 2 3 1 3
+a c c a b b	3 2 2 3 1 1
+a c c a b c	3 2 2 3 1 2
+a c c a c a	3 2 2 3 2 3
+a c c a c b	3 2 2 3 2 1
+a c c a c c	3 2 2 3 2 2
+a c c b a a	3 2 2 1 3 3
+a c c b a b	3 2 2 1 3 1
+a c c b a c	3 2 2 1 3 2
+a c c b b a	3 2 2 1 1 3
+a c c b b b	3 2 2 1 1 1
+a c c b b c	3 2 2 1 1 2
+a c c b c a	3 2 2 1 2 3
+a c c b c b	3 2 2 1 2 1
+a c c b c c	3 2 2 1 2 2
+a c c c a a	3 2 2 2 3 3
+a c c c a b	3 2 2 2 3 1
+a c c c a c	3 2 2 2 3 2
+a c c c b a	3 2 2 2 1 3
+a c c c b b	3 2 2 2 1 1
+a c c c b c	3 2 2 2 1 2
+a c c c c a	3 2 2 2 2 3
+a c c c c b	3 2 2 2 2 1
+a c c c c c	3 2 2 2 2 2
+b a a a a a	1 3 3 3 3 3
+b a a a a b	1 3 3 3 3 1
+b a a a a c	1 3 3 3 3 2
+b a a a b a	1 3 3 3 1 3
+b a a a b b	1 3 3 3 1 1
+b a a a b c	1 3 3 3 1 2
+b a a a c a	1 3 3 3 2 3
+b a a a c b	1 3 3 3 2 1
+b a a a c c	1 3 3 3 2 2
+b a a b a a	1 3 3 1 3 3
+b a a b a b	1 3 3 1 3 1
+b a a b a c	1 3 3 1 3 2
+b a a b b a	1 3 3 1 1 3
+b a a b b b	1 3 3 1 1 1
+b a a b b c	1 3 3 1 1 2
+b a a b c a	1 3 3 1 2 3
+b a a b c b	1 3 3 1 2 1
+b a a b c c	1 3 3 1 2 2
+b a a c a a	1 3 3 2 3 3
+b a a c a b	1 3 3 2 3 1
+b a a c a c	1 3 3 2 3 2
+b a a c b a	1 3 3 2 1 3
+b a a c b b	1 3 3 2 1 1
+b a a c b c	1 3 3 2 1 2
+b a a c c a	1 3 3 2 2 3
+b a a c c b	1 3 3 2 2 1
+b a a c c c	1 3 3 2 2 2
+b a b a a a	1 3 1 3 3 3
+b a b a a b	1 3 1 3 3 1
+b a b a a c	1 3 1 3 3 2
+b a b a b a	1 3 1 3 1 3
+b a b a b b	1 3 1 3 1 1
+b a b a b c	1 3 1 3 1 2
+b a b a c a	1 3 1 3 2 3
+b a b a c b	1 3 1 3 2 1
+b a b a c c	1 3 1 3 2 2
+b a b b a a	1 3 1 1 3 3
+b a b b a b	1 3 1 1 3 1
+b a b b a c	1 3 1 1 3 2
+b a b b b a	1 3 1 1 1 3
+b a b b b b	1 3 1 1 1 1
+b a b b b c	1 3 1 1 1 2
+b a b b c a	1 3 1 1 2 3
+b a b b c b	1 3 1 1 2 1
+b a b b c c	1 3 1 1 2 2
+b a b c a a	1 3 1 2 3 3
+b a b c a b	1 3 1 2 3 1
+b a b c a c	1 3 1 2 3 2
+b a b c b a	1 3 1 2 1 3
+b a b c b b	1 3 1 2 1 1
+b a b c b c	1 3 1 2 1 2
+b a b c c a	1 3 1 2 2 3
+b a b c c b	1 3 1 2 2 1
+b a b c c c	1 3 1 2 2 2
+b a c a a a	1 3 2 3 3 3
+b a c a a b	1 3 2 3 3 1
+b a c a a c	1 3 2 3 3 2
+b a c a b a	1 3 2 3 1 3
+b a c a b b	1 3 2 3 1 1
+b a c a b c	1 3 2 3 1 2
+b a c a c a	1 3 2 3 2 3
+b a c a c b	1 3 2 3 2 1
+b a c a c c	1 3 2 3 2 2
+b a c b a a	1 3 2 1 3 3
+b a c b a b	1 3 2 1 3 1
+b a c b a c	1 3 2 1 3 2
+b a c b b a	1 3 2 1 1 3
+b a c b b b	1 3 2 1 1 1
+b a c b b c	1 3 2 1 1 2
+b a c b c a	1 3 2 1 2 3
+b a c b c b	1 3 2 1 2 1
+b a c b c c	1 3 2 1 2 2
+b a c c a a	1 3 2 2 3 3
+b a c c a b	1 3 2 2 3 1
+b a c c a c	1 3 2 2 3 2
+b a c c b a	1 3 2 2 1 3
+b a c c b b	1 3 2 2 1 1
+b a c c b c	1 3 2 2 1 2
+b a c c c a	1 3 2 2 2 3
+b a c c c b	1 3 2 2 2 1
+b a c c c c	1 3 2 2 2 2
+b b a a a a	1 1 3 3 3 3
+b b a a a b	1 1 3 3 3 1
+b b a a a c	1 1 3 3 3 2
+b b a a b a	1 1 3 3 1 3
+b b a a b b	1 1 3 3 1 1
+b b a a b c	1 1 3 3 1 2
+b b a a c a	1 1 3 3 2 3
+b b a a c b	1 1 3 3 2 1
+b b a a c c	1 1 3 3 2 2
+b b a b a a	1 1 3 1 3 3
+b b a b a b	1 1 3 1 3 1
+b b a b a c	1 1 3 1 3 2
+b b a b b a	1 1 3 1 1 3
+b b a b b b	1 1 3 1 1 1
+b b a b b c	1 1 3 1 1 2
+b b a b c a	1 1 3 1 2 3
+b b a b c b	1 1 3 1 2 1
+b b a b c c	1 1 3 1 2 2
+b b a c a a	1 1 3 2 3 3
+b b a c a b	1 1 3 2 3 1
+b b a c a c	1 1 3 2 3 2
+b b a c b a	1 1 3 2 1 3
+b b a c b b	1 1 3 2 1 1
+b b a c b c	1 1 3 2 1 2
+b b a c c a	1 1 3 2 2 3
+b b a c c b	1 1 3 2 2 1
+b b a c c c	1 1 3 2 2 2
+b b b a a a	1 1 1 3 3 3
+b b b a a b	1 1 1 3 3 1
+b b b a a c	1 1 1 3 3 2
+b b b a b a	1 1 1 3 1 3
+b b b a b b	1 1 1 3 1 1
+b b b a b c	1 1 1 3 1 2
+b b b a c a	1 1 1 3 2 3
+b b b a c b	1 1 1 3 2 1
+b b b a c c	1 1 1 3 2 2
+b b b b a a	1 1 1 1 3 3
+b b b b a b	1 1 1 1 3 1
+b b b b a c	1 1 1 1 3 2
+b b b b b a	1 1 1 1 1 3
+b b b b b b	1 1 1 1 1 1
+b b b b b c	1 1 1 1 1 2
+b b b b c a	1 1 1 1 2 3
+b b b b c b	1 1 1 1 2 1
+b b b b c c	1 1 1 1 2 2
+b b b c a a	1 1 1 2 3 3
+b b b c a b	1 1 1 2 3 1
+b b b c a c	1 1 1 2 3 2
+b b b c b a	1 1 1 2 1 3
+b b b c b b	1 1 1 2 1 1
+b b b c b c	1 1 1 2 1 2
+b b b c c a	1 1 1 2 2 3
+b b b c c b	1 1 1 2 2 1
+b b b c c c	1 1 1 2 2 2
+b b c a a a	1 1 2 3 3 3
+b b c a a b	1 1 2 3 3 1
+b b c a a c	1 1 2 3 3 2
+b b c a b a	1 1 2 3 1 3
+b b c a b b	1 1 2 3 1 1
+b b c a b c	1 1 2 3 1 2
+b b c a c a	1 1 2 3 2 3
+b b c a c b	1 1 2 3 2 1
+b b c a c c	1 1 2 3 2 2
+b b c b a a	1 1 2 1 3 3
+b b c b a b	1 1 2 1 3 1
+b b c b a c	1 1 2 1 3 2
+b b c b b a	1 1 2 1 1 3
+b b c b b b	1 1 2 1 1 1
+b b c b b c	1 1 2 1 1 2
+b b c b c a	1 1 2 1 2 3
+b b c b c b	1 1 2 1 2 1
+b b c b c c	1 1 2 1 2 2
+b b c c a a	1 1 2 2 3 3
+b b c c a b	1 1 2 2 3 1
+b b c c a c	1 1 2 2 3 2
+b b c c b a	1 1 2 2 1 3
+b b c c b b	1 1 2 2 1 1
+b b c c b c	1 1 2 2 1 2
+b b c c c a	1 1 2 2 2 3
+b b c c c b	1 1 2 2 2 1
+b b c c c c	1 1 2 2 2 2
+b c a a a a	1 2 3 3 3 3
+b c a a a b	1 2 3 3 3 1
+b c a a a c	1 2 3 3 3 2
+b c a a b a	1 2 3 3 1 3
+b c a a b b	1 2 3 3 1 1
+b c a a b c	1 2 3 3 1 2
+b c a a c a	1 2 3 3 2 3
+b c a a c b	1 2 3 3 2 1
+b c a a c c	1 2 3 3 2 2
+b c a b a a	1 2 3 1 3 3
+b c a b a b	1 2 3 1 3 1
+b c a b a c	1 2 3 1 3 2
+b c a b b a	1 2 3 1 1 3
+b c a b b b	1 2 3 1 1 1
+b c a b b c	1 2 3 1 1 2
+b c a b c a	1 2 3 1 2 3
+b c a b c b	1 2 3 1 2 1
+b c a b c c	1 2 3 1 2 2
+b c a c a a	1 2 3 2 3 3
+b c a c a b	1 2 3 2 3 1
+b c a c a c	1 2 3 2 3 2
+b c a c b a	1 2 3 2 1 3
+b c a c b b	1 2 3 2 1 1
+b c a c b c	1 2 3 2 1 2
+b c a c c a	1 2 3 2 2 3
+b c a c c b	1 2 3 2 2 1
+b c a c c c	1 2 3 2 2 2
+b c b a a a	1 2 1 3 3 3
+b c b a a b	1 2 1 3 3 1
+b c b a a c	1 2 1 3 3 2
+b c b a b a	1 2 1 3 1 3
+b c b a b b	1 2 1 3 1 1
+b c b a b c	1 2 1 3 1 2
+b c b a c a	1 2 1 3 2 3
+b c b a c b	1 2 1 3 2 1
+b c b a c c	1 2 1 3 2 2
+b c b b a a	1 2 1 1 3 3
+b c b b a b	1 2 1 1 3 1
+b c b b a c	1 2 1 1 3 2
+b c b b b a	1 2 1 1 1 3
+b c b b b b	1 2 1 1 1 1
+b c b b b c	1 2 1 1 1 2
+b c b b c a	1 2 1 1 2 3
+b c b b c b	1 2 1 1 2 1
+b c b b c c	1 2 1 1 2 2
+b c b c a a	1 2 1 2 3 3
+b c b c a b	1 2 1 2 3 1
+b c b c a c	1 2 1 2 3 2
+b c b c b a	1 2 1 2 1 3
+b c b c b b	1 2 1 2 1 1
+b c b c b c	1 2 1 2 1 2
+b c b c c a	1 2 1 2 2 3
+b c b c c b	1 2 1 2 2 1
+b c b c c c	1 2 1 2 2 2
+b c c a a a	1 2 2 3 3 3
+b c c a a b	1 2 2 3 3 1
+b c c a a c	1 2 2 3 3 2
+b c c a b a	1 2 2 3 1 3
+b c c a b b	1 2 2 3 1 1
+b c c a b c	1 2 2 3 1 2
+b c c a c a	1 2 2 3 2 3
+b c c a c b	1 2 2 3 2 1
+b c c a c c	1 2 2 3 2 2
+b c c b a a	1 2 2 1 3 3
+b c c b a b	1 2 2 1 3 1
+b c c b a c	1 2 2 1 3 2
+b c c b b a	1 2 2 1 1 3
+b c c b b b	1 2 2 1 1 1
+b c c b b c	1 2 2 1 1 2
+b c c b c a	1 2 2 1 2 3
+b c c b c b	1 2 2 1 2 1
+b c c b c c	1 2 2 1 2 2
+b c c c a a	1 2 2 2 3 3
+b c c c a b	1 2 2 2 3 1
+b c c c a c	1 2 2 2 3 2
+b c c c b a	1 2 2 2 1 3
+b c c c b b	1 2 2 2 1 1
+b c c c b c	1 2 2 2 1 2
+b c c c c a	1 2 2 2 2 3
+b c c c c b	1 2 2 2 2 1
+b c c c c c	1 2 2 2 2 2
+c a a a a a	2 3 3 3 3 3
+c a a a a b	2 3 3 3 3 1
+c a a a a c	2 3 3 3 3 2
+c a a a b a	2 3 3 3 1 3
+c a a a b b	2 3 3 3 1 1
+c a a a b c	2 3 3 3 1 2
+c a a a c a	2 3 3 3 2 3
+c a a a c b	2 3 3 3 2 1
+c a a a c c	2 3 3 3 2 2
+c a a b a a	2 3 3 1 3 3
+c a a b a b	2 3 3 1 3 1
+c a a b a c	2 3 3 1 3 2
+c a a b b a	2 3 3 1 1 3
+c a a b b b	2 3 3 1 1 1
+c a a b b c	2 3 3 1 1 2
+c a a b c a	2 3 3 1 2 3
+c a a b c b	2 3 3 1 2 1
+c a a b c c	2 3 3 1 2 2
+c a a c a a	2 3 3 2 3 3
+c a a c a b	2 3 3 2 3 1
+c a a c a c	2 3 3 2 3 2
+c a a c b a	2 3 3 2 1 3
+c a a c b b	2 3 3 2 1 1
+c a a c b c	2 3 3 2 1 2
+c a a c c a	2 3 3 2 2 3
+c a a c c b	2 3 3 2 2 1
+c a a c c c	2 3 3 2 2 2
+c a b a a a	2 3 1 3 3 3
+c a b a a b	2 3 1 3 3 1
+c a b a a c	2 3 1 3 3 2
+c a b a b a	2 3 1 3 1 3
+c a b a b b	2 3 1 3 1 1
+c a b a b c	2 3 1 3 1 2
+c a b a c a	2 3 1 3 2 3
+c a b a c b	2 3 1 3 2 1
+c a b a c c	2 3 1 3 2 2
+c a b b a a	2 3 1 1 3 3
+c a b b a b	2 3 1 1 3 1
+c a b b a c	2 3 1 1 3 2
+c a b b b a	2 3 1 1 1 3
+c a b b b b	2 3 1 1 1 1
+c a b b b c	2 3 1 1 1 2
+c a b b c a	2 3 1 1 2 3
+c a b b c b	2 3 1 1 2 1
+c a b b c c	2 3 1 1 2 2
+c a b c a a	2 3 1 2 3 3
+c a b c a b	2 3 1 2 3 1
+c a b c a c	2 3 1 2 3 2
+c a b c b a	2 3 1 2 1 3
+c a b c b b	2 3 1 2 1 1
+c a b c b c	2 3 1 2 1 2
+c a b c c a	2 3 1 2 2 3
+c a b c c b	2 3 1 2 2 1
+c a b c c c	2 3 1 2 2 2
+c a c a a a	2 3 2 3 3 3
+c a c a a b	2 3 2 3 3 1
+c a c a a c	2 3 2 3 3 2
+c a c a b a	2 3 2 3 1 3
+c a c a b b	2 3 2 3 1 1
+c a c a b c	2 3 2 3 1 2
+c a c a c a	2 3 2 3 2 3
+c a c a c b	2 3 2 3 2 1
+c a c a c c	2 3 2 3 2 2
+c a c b a a	2 3 2 1 3 3
+c a c b a b	2 3 2 1 3 1
+c a c b a c	2 3 2 1 3 2
+c a c b b a	2 3 2 1 1 3
+c a c b b b	2 3 2 1 1 1
+c a c b b c	2 3 2 1 1 2
+c a c b c a	2 3 2 1 2 3
+c a c b c b	2 3 2 1 2 1
+c a c b c c	2 3 2 1 2 2
+c a c c a a	2 3 2 2 3 3
+c a c c a b	2 3 2 2 3 1
+c a c c a c	2 3 2 2 3 2
+c a c c b a	2 3 2 2 1 3
+c a c c b b	2 3 2 2 1 1
+c a c c b c	2 3 2 2 1 2
+c a c c c a	2 3 2 2 2 3
+c a c c c b	2 3 2 2 2 1
+c a c c c c	2 3 2 2 2 2
+c b a a a a	2 1 3 3 3 3
+c b a a a b	2 1 3 3 3 1
+c b a a a c	2 1 3 3 3 2
+c b a a b a	2 1 3 3 1 3
+c b a a b b	2 1 3 3 1 1
+c b a a b c	2 1 3 3 1 2
+c b a a c a	2 1 3 3 2 3
+c b a a c b	2 1 3 3 2 1
+c b a a c c	2 1 3 3 2 2
+c b a b a a	2 1 3 1 3 3
+c b a b a b	2 1 3 1 3 1
+c b a b a c	2 1 3 1 3 2
+c b a b b a	2 1 3 1 1 3
+c b a b b b	2 1 3 1 1 1
+c b a b b c	2 1 3 1 1 2
+c b a b c a	2 1 3 1 2 3
+c b a b c b	2 1 3 1 2 1
+c b a b c c	2 1 3 1 2 2
+c b a c a a	2 1 3 2 3 3
+c b a c a b	2 1 3 2 3 1
+c b a c a c	2 1 3 2 3 2
+c b a c b a	2 1 3 2 1 3
+c b a c b b	2 1 3 2 1 1
+c b a c b c	2 1 3 2 1 2
+c b a c c a	2 1 3 2 2 3
+c b a c c b	2 1 3 2 2 1
+c b a c c c	2 1 3 2 2 2
+c b b a a a	2 1 1 3 3 3
+c b b a a b	2 1 1 3 3 1
+c b b a a c	2 1 1 3 3 2
+c b b a b a	2 1 1 3 1 3
+c b b a b b	2 1 1 3 1 1
+c b b a b c	2 1 1 3 1 2
+c b b a c a	2 1 1 3 2 3
+c b b a c b	2 1 1 3 2 1
+c b b a c c	2 1 1 3 2 2
+c b b b a a	2 1 1 1 3 3
+c b b b a b	2 1 1 1 3 1
+c b b b a c	2 1 1 1 3 2
+c b b b b a	2 1 1 1 1 3
+c b b b b b	2 1 1 1 1 1
+c b b b b c	2 1 1 1 1 2
+c b b b c a	2 1 1 1 2 3
+c b b b c b	2 1 1 1 2 1
+c b b b c c	2 1 1 1 2 2
+c b b c a a	2 1 1 2 3 3
+c b b c a b	2 1 1 2 3 1
+c b b c a c	2 1 1 2 3 2
+c b b c b a	2 1 1 2 1 3
+c b b c b b	2 1 1 2 1 1
+c b b c b c	2 1 1 2 1 2
+c b b c c a	2 1 1 2 2 3
+c b b c c b	2 1 1 2 2 1
+c b b c c c	2 1 1 2 2 2
+c b c a a a	2 1 2 3 3 3
+c b c a a b	2 1 2 3 3 1
+c b c a a c	2 1 2 3 3 2
+c b c a b a	2 1 2 3 1 3
+c b c a b b	2 1 2 3 1 1
+c b c a b c	2 1 2 3 1 2
+c b c a c a	2 1 2 3 2 3
+c b c a c b	2 1 2 3 2 1
+c b c a c c	2 1 2 3 2 2
+c b c b a a	2 1 2 1 3 3
+c b c b a b	2 1 2 1 3 1
+c b c b a c	2 1 2 1 3 2
+c b c b b a	2 1 2 1 1 3
+c b c b b b	2 1 2 1 1 1
+c b c b b c	2 1 2 1 1 2
+c b c b c a	2 1 2 1 2 3
+c b c b c b	2 1 2 1 2 1
+c b c b c c	2 1 2 1 2 2
+c b c c a a	2 1 2 2 3 3
+c b c c a b	2 1 2 2 3 1
+c b c c a c	2 1 2 2 3 2
+c b c c b a	2 1 2 2 1 3
+c b c c b b	2 1 2 2 1 1
+c b c c b c	2 1 2 2 1 2
+c b c c c a	2 1 2 2 2 3
+c b c c c b	2 1 2 2 2 1
+c b c c c c	2 1 2 2 2 2
+c c a a a a	2 2 3 3 3 3
+c c a a a b	2 2 3 3 3 1
+c c a a a c	2 2 3 3 3 2
+c c a a b a	2 2 3 3 1 3
+c c a a b b	2 2 3 3 1 1
+c c a a b c	2 2 3 3 1 2
+c c a a c a	2 2 3 3 2 3
+c c a a c b	2 2 3 3 2 1
+c c a a c c	2 2 3 3 2 2
+c c a b a a	2 2 3 1 3 3
+c c a b a b	2 2 3 1 3 1
+c c a b a c	2 2 3 1 3 2
+c c a b b a	2 2 3 1 1 3
+c c a b b b	2 2 3 1 1 1
+c c a b b c	2 2 3 1 1 2
+c c a b c a	2 2 3 1 2 3
+c c a b c b	2 2 3 1 2 1
+c c a b c c	2 2 3 1 2 2
+c c a c a a	2 2 3 2 3 3
+c c a c a b	2 2 3 2 3 1
+c c a c a c	2 2 3 2 3 2
+c c a c b a	2 2 3 2 1 3
+c c a c b b	2 2 3 2 1 1
+c c a c b c	2 2 3 2 1 2
+c c a c c a	2 2 3 2 2 3
+c c a c c b	2 2 3 2 2 1
+c c a c c c	2 2 3 2 2 2
+c c b a a a	2 2 1 3 3 3
+c c b a a b	2 2 1 3 3 1
+c c b a a c	2 2 1 3 3 2
+c c b a b a	2 2 1 3 1 3
+c c b a b b	2 2 1 3 1 1
+c c b a b c	2 2 1 3 1 2
+c c b a c a	2 2 1 3 2 3
+c c b a c b	2 2 1 3 2 1
+c c b a c c	2 2 1 3 2 2
+c c b b a a	2 2 1 1 3 3
+c c b b a b	2 2 1 1 3 1
+c c b b a c	2 2 1 1 3 2
+c c b b b a	2 2 1 1 1 3
+c c b b b b	2 2 1 1 1 1
+c c b b b c	2 2 1 1 1 2
+c c b b c a	2 2 1 1 2 3
+c c b b c b	2 2 1 1 2 1
+c c b b c c	2 2 1 1 2 2
+c c b c a a	2 2 1 2 3 3
+c c b c a b	2 2 1 2 3 1
+c c b c a c	2 2 1 2 3 2
+c c b c b a	2 2 1 2 1 3
+c c b c b b	2 2 1 2 1 1
+c c b c b c	2 2 1 2 1 2
+c c b c c a	2 2 1 2 2 3
+c c b c c b	2 2 1 2 2 1
+c c b c c c	2 2 1 2 2 2
+c c c a a a	2 2 2 3 3 3
+c c c a a b	2 2 2 3 3 1
+c c c a a c	2 2 2 3 3 2
+c c c a b a	2 2 2 3 1 3
+c c c a b b	2 2 2 3 1 1
+c c c a b c	2 2 2 3 1 2
+c c c a c a	2 2 2 3 2 3
+c c c a c b	2 2 2 3 2 1
+c c c a c c	2 2 2 3 2 2
+c c c b a a	2 2 2 1 3 3
+c c c b a b	2 2 2 1 3 1
+c c c b a c	2 2 2 1 3 2
+c c c b b a	2 2 2 1 1 3
+c c c b b b	2 2 2 1 1 1
+c c c b b c	2 2 2 1 1 2
+c c c b c a	2 2 2 1 2 3
+c c c b c b	2 2 2 1 2 1
+c c c b c c	2 2 2 1 2 2
+c c c c a a	2 2 2 2 3 3
+c c c c a b	2 2 2 2 3 1
+c c c c a c	2 2 2 2 3 2
+c c c c b a	2 2 2 2 1 3
+c c c c b b	2 2 2 2 1 1
+c c c c b c	2 2 2 2 1 2
+c c c c c a	2 2 2 2 2 3
+c c c c c b	2 2 2 2 2 1
+c c c c c c	2 2 2 2 2 2
+a b a b a b	3 1 3 1 3 1
+b c b c b c	1 2 1 2 1 2
+a b c a b c a b c	3 1 2 3 1 2 3 1 2
+a b c a b c a	3 1 2 3 1 2 3
+a a b b c c	3 3 1 1 2 2
+a b b c c c	3 1 1 2 2 2
+a a a b b c	3 3 3 1 1 2
+
+# =============== 添加噪声符号的增强数据 ===============
+a b c	3 1 2
+a b - c	3 1 2
+b a c	1 3 2
+c a b	2 3 1
+( c a b )	2 3 1
+a c b	3 2 1
+b c a	1 2 3
+c b a	2 1 3
+c b	2 1
+c . b	2 1
+a	3
+b	1
+c	2
+a b	3 1
+a c	3 2
+b a	1 3
+b c	1 2
+c a	2 3
+a a	3 3
+b b	1 1
+c c	2 2
+[ c c ]	2 2
+a a a	3 3 3
+b b b	1 1 1
+c c c	2 2 2
+a b a b	3 1 3 1
+b c b c	1 2 1 2
+c a c a	2 3 2 3
+a b c a b c	3 1 2 3 1 2
+[ a b c a b c ]	3 1 2 3 1 2
+a b a	3 1 3
+b c b	1 2 1
+c a c	2 3 2
+[ c a c ]	2 3 2
+a b c b a	3 1 2 1 3
+b c a c b	1 2 3 2 1
+( b c a c b )	1 2 3 2 1
+a a b	3 3 1
+a a c	3 3 2
+a b b	3 1 1
+a c a	3 2 3
+a c c	3 2 2
+a c | c	3 2 2
+b a a	1 3 3
+b a b	1 3 1
+b | a b	1 3 1
+b b a	1 1 3
+( b b a )	1 1 3
+b b c	1 1 2
+( b b c )	1 1 2
+b c c	1 2 2
+c a a	2 3 3
+c b b	2 1 1
+c b c	2 1 2
+c c a	2 2 3
+c c b	2 2 1
+a a a a	3 3 3 3
+b b b b	1 1 1 1
+c c c c	2 2 2 2
+a a b b	3 3 1 1
+b b c c	1 1 2 2
+c c a a	2 2 3 3
+[ c c a a ]	2 2 3 3
+a b c a	3 1 2 3
+b c a b	1 2 3 1
+c a b c	2 3 1 2
+a c b a	3 2 1 3
+a a a b	3 3 3 1
+( a a a b )	3 3 3 1
+a a a c	3 3 3 2
+a a b a	3 3 1 3
+a a b c	3 3 1 2
+a a c a	3 3 2 3
+a a c b	3 3 2 1
+a a c c	3 3 2 2
+a b a a	3 1 3 3
+a b a c	3 1 3 2
+a b | a | c	3 1 3 2
+a b b a	3 1 1 3
+a b b b	3 1 1 1
+a b b c	3 1 1 2
+a b c b	3 1 2 1
+a b c c	3 1 2 2
+a c a a	3 2 3 3
+a c a b	3 2 3 1
+[ a | c a b ]	3 2 3 1
+a c a c	3 2 3 2
+a c b b	3 2 1 1
+a c b c	3 2 1 2
+a c c a	3 2 2 3
+a c c b	3 2 2 1
+a c c c	3 2 2 2
+b a a a	1 3 3 3
+b - a - a - a	1 3 3 3
+b a a b	1 3 3 1
+b a a c	1 3 3 2
+b a b a	1 3 1 3
+b - a - b a	1 3 1 3
+b a b b	1 3 1 1
+b a b c	1 3 1 2
+( b a b c )	1 3 1 2
+b a c a	1 3 2 3
+b a c b	1 3 2 1
+b a c c	1 3 2 2
+b . a c c	1 3 2 2
+b b a a	1 1 3 3
+b b a b	1 1 3 1
+b b a c	1 1 3 2
+b b b a	1 1 1 3
+b b b c	1 1 1 2
+( b b b c )	1 1 1 2
+b b c a	1 1 2 3
+b b c b	1 1 2 1
+b c a a	1 2 3 3
+b c a c	1 2 3 2
+b _ c a _ c	1 2 3 2
+b c b a	1 2 1 3
+b c b b	1 2 1 1
+b c c a	1 2 2 3
+b c c b	1 2 2 1
+b c c c	1 2 2 2
+c a a a	2 3 3 3
+c a a b	2 3 3 1
+c a a c	2 3 3 2
+c a b a	2 3 1 3
+[ c , a b , a ]	2 3 1 3
+c a b b	2 3 1 1
+c a c b	2 3 2 1
+c a c c	2 3 2 2
+c b a a	2 1 3 3
+( c b a a )	2 1 3 3
+c b a b	2 1 3 1
+c | b a | b	2 1 3 1
+c b a c	2 1 3 2
+c b b a	2 1 1 3
+c b b b	2 1 1 1
+[ c b b b ]	2 1 1 1
+c b b c	2 1 1 2
+[ c b b c ]	2 1 1 2
+c b c a	2 1 2 3
+c b - c a	2 1 2 3
+c b c b	2 1 2 1
+c b c c	2 1 2 2
+c c a b	2 2 3 1
+c c a c	2 2 3 2
+c c b a	2 2 1 3
+c . c b a	2 2 1 3
+c c b b	2 2 1 1
+c c b c	2 2 1 2
+c c c a	2 2 2 3
+c c c b	2 2 2 1
+[ c c c b ]	2 2 2 1
+a a a a a	3 3 3 3 3
+a a a a b	3 3 3 3 1
+a a a a c	3 3 3 3 2
+a a a b a	3 3 3 1 3
+a a a b b	3 3 3 1 1
+a a a b c	3 3 3 1 2
+a a a c a	3 3 3 2 3
+a a a c b	3 3 3 2 1
+a . a . a c . b	3 3 3 2 1
+a a a c c	3 3 3 2 2
+a a b a a	3 3 1 3 3
+( a a b a a )	3 3 1 3 3
+a a b a b	3 3 1 3 1
+a a b a c	3 3 1 3 2
+[ a a b a c ]	3 3 1 3 2
+a a b b a	3 3 1 1 3
+a a b b b	3 3 1 1 1
+a a b b c	3 3 1 1 2
+a a b c a	3 3 1 2 3
+a a b c b	3 3 1 2 1
+a a b c c	3 3 1 2 2
+a a c a a	3 3 2 3 3
+a a c a b	3 3 2 3 1
+a a c a c	3 3 2 3 2
+a a c b a	3 3 2 1 3
+( a a c b a )	3 3 2 1 3
+a a c b b	3 3 2 1 1
+a a c b c	3 3 2 1 2
+a a c c a	3 3 2 2 3
+a a c c b	3 3 2 2 1
+a a c c c	3 3 2 2 2
+[ a a c c , c ]	3 3 2 2 2
+a b a a a	3 1 3 3 3
+a b a a b	3 1 3 3 1
+a b a a c	3 1 3 3 2
+( a b a | a c )	3 1 3 3 2
+a b a b a	3 1 3 1 3
+a b a b b	3 1 3 1 1
+a b a b c	3 1 3 1 2
+a b a c a	3 1 3 2 3
+a b a c b	3 1 3 2 1
+a b a c c	3 1 3 2 2
+a b b a a	3 1 1 3 3
+a b b a b	3 1 1 3 1
+a b b a c	3 1 1 3 2
+a b b b a	3 1 1 1 3
+a _ b b _ b a	3 1 1 1 3
+a b b b b	3 1 1 1 1
+a b b b c	3 1 1 1 2
+a _ b _ b b c	3 1 1 1 2
+a b b c a	3 1 1 2 3
+a b b c b	3 1 1 2 1
+a b b c c	3 1 1 2 2
+a b c a a	3 1 2 3 3
+[ a b c a a ]	3 1 2 3 3
+a b c a b	3 1 2 3 1
+[ a b c a b ]	3 1 2 3 1
+a b c a c	3 1 2 3 2
+a b c b b	3 1 2 1 1
+a b c b c	3 1 2 1 2
+a b c c a	3 1 2 2 3
+a b c c b	3 1 2 2 1
+a b c c c	3 1 2 2 2
+a c a a a	3 2 3 3 3
+a c _ a _ a _ a	3 2 3 3 3
+a c a a b	3 2 3 3 1
+a c a a c	3 2 3 3 2
+a c a b a	3 2 3 1 3
+( a c a b a )	3 2 3 1 3
+a c a b b	3 2 3 1 1
+[ a c a b b ]	3 2 3 1 1
+a c a b c	3 2 3 1 2
+a c a c a	3 2 3 2 3
+a c a c b	3 2 3 2 1
+a c a c c	3 2 3 2 2
+a c b a a	3 2 1 3 3
+a c b a b	3 2 1 3 1
+a c b a c	3 2 1 3 2
+a c b b a	3 2 1 1 3
+a c b b b	3 2 1 1 1
+a c b b c	3 2 1 1 2
+a c b c a	3 2 1 2 3
+a c b c b	3 2 1 2 1
+[ a c b c b ]	3 2 1 2 1
+a c b c c	3 2 1 2 2
+a c c a a	3 2 2 3 3
+a c c a b	3 2 2 3 1
+a c c a | b	3 2 2 3 1
+a c c a c	3 2 2 3 2
+a c c b a	3 2 2 1 3
+a c c b b	3 2 2 1 1
+a c c b c	3 2 2 1 2
+a c c c a	3 2 2 2 3
+a c c c b	3 2 2 2 1
+a c c c c	3 2 2 2 2
+b a a a a	1 3 3 3 3
+b a a a b	1 3 3 3 1
+b a - a a - b	1 3 3 3 1
+b a a a c	1 3 3 3 2
+b a a b a	1 3 3 1 3
+b a a b b	1 3 3 1 1
+b a a b c	1 3 3 1 2
+b a a c a	1 3 3 2 3
+b a a c b	1 3 3 2 1
+b a a c c	1 3 3 2 2
+b a b a a	1 3 1 3 3
+b a b a b	1 3 1 3 1
+b a b a c	1 3 1 3 2
+b a b b a	1 3 1 1 3
+b a b b b	1 3 1 1 1
+b a b b c	1 3 1 1 2
+b a b c a	1 3 1 2 3
+( b a b c a )	1 3 1 2 3
+b a b c b	1 3 1 2 1
+b a b c c	1 3 1 2 2
+b a c a a	1 3 2 3 3
+b a c a b	1 3 2 3 1
+b a c a c	1 3 2 3 2
+( b a c a c )	1 3 2 3 2
+b a c b a	1 3 2 1 3
+b a c b b	1 3 2 1 1
+( b a c b b )	1 3 2 1 1
+b a c b c	1 3 2 1 2
+b a c c a	1 3 2 2 3
+b a c c b	1 3 2 2 1
+b a c c c	1 3 2 2 2
+b b a a a	1 1 3 3 3
+b b a a b	1 1 3 3 1
+b b a a c	1 1 3 3 2
+b b a b a	1 1 3 1 3
+b b a b b	1 1 3 1 1
+b , b , a , b b	1 1 3 1 1
+b b a b c	1 1 3 1 2
+b b a c a	1 1 3 2 3
+( b b a c a )	1 1 3 2 3
+b b a c b	1 1 3 2 1
+b b a c c	1 1 3 2 2
+b b b a a	1 1 1 3 3
+b b b a b	1 1 1 3 1
+b b b a c	1 1 1 3 2
+b b b b a	1 1 1 1 3
+b b b b b	1 1 1 1 1
+b b b b c	1 1 1 1 2
+b b b c a	1 1 1 2 3
+b b b c b	1 1 1 2 1
+b b b c c	1 1 1 2 2
+b b | b c c	1 1 1 2 2
+b b c a a	1 1 2 3 3
+b b c a b	1 1 2 3 1
+b b c a c	1 1 2 3 2
+b b c b a	1 1 2 1 3
+b b c b b	1 1 2 1 1
+b b c b c	1 1 2 1 2
+b b c c a	1 1 2 2 3
+( b b c c a )	1 1 2 2 3
+b b c c b	1 1 2 2 1
+b b c c c	1 1 2 2 2
+b c a a a	1 2 3 3 3
+b c a a b	1 2 3 3 1
+[ b c a . a b ]	1 2 3 3 1
+b c a a c	1 2 3 3 2
+b c a b a	1 2 3 1 3
+b c a b b	1 2 3 1 1
+b c a b c	1 2 3 1 2
+b c a c a	1 2 3 2 3
+b c a c c	1 2 3 2 2
+b c b a a	1 2 1 3 3
+b c b a b	1 2 1 3 1
+b c b a c	1 2 1 3 2
+b c b b a	1 2 1 1 3
+b c b . b . a	1 2 1 1 3
+b c b b b	1 2 1 1 1
+[ b c b b b ]	1 2 1 1 1
+b c b b c	1 2 1 1 2
+b c b c a	1 2 1 2 3
+b c b c b	1 2 1 2 1
+b c b c c	1 2 1 2 2
+b c c a a	1 2 2 3 3
+b c c a b	1 2 2 3 1
+b c c a c	1 2 2 3 2
+b c c b a	1 2 2 1 3
+b | c | c b | a	1 2 2 1 3
+b c c b b	1 2 2 1 1
+b c c b c	1 2 2 1 2
+b c c c a	1 2 2 2 3
+b c c c b	1 2 2 2 1
+b c c c c	1 2 2 2 2
+c a a a a	2 3 3 3 3
+c a a a b	2 3 3 3 1
+c a a a c	2 3 3 3 2
+c a a b a	2 3 3 1 3
+c a a b b	2 3 3 1 1
+c a a b c	2 3 3 1 2
+c a a c a	2 3 3 2 3
+c a a c b	2 3 3 2 1
+c a a c c	2 3 3 2 2
+c a b a a	2 3 1 3 3
+c a b a b	2 3 1 3 1
+c a b a c	2 3 1 3 2
+c a b b a	2 3 1 1 3
+c a b b b	2 3 1 1 1
+[ c a b b b ]	2 3 1 1 1
+c a b b c	2 3 1 1 2
+c a b c a	2 3 1 2 3
+( c a b c a )	2 3 1 2 3
+c a b c b	2 3 1 2 1
+c a b c c	2 3 1 2 2
+c a c a a	2 3 2 3 3
+c a c a b	2 3 2 3 1
+c a c a c	2 3 2 3 2
+c a c b a	2 3 2 1 3
+c a c b b	2 3 2 1 1
+c a c b c	2 3 2 1 2
+c a c c a	2 3 2 2 3
+c a c c b	2 3 2 2 1
+c a c c c	2 3 2 2 2
+c b a a a	2 1 3 3 3
+c b a a b	2 1 3 3 1
+c b a a c	2 1 3 3 2
+c b a b a	2 1 3 1 3
+c b a b b	2 1 3 1 1
+( c b a b b )	2 1 3 1 1
+c b a b c	2 1 3 1 2
+c b a c a	2 1 3 2 3
+c b a c b	2 1 3 2 1
+c b a c c	2 1 3 2 2
+c b b a a	2 1 1 3 3
+c b b a b	2 1 1 3 1
+c b b a c	2 1 1 3 2
+c b b b a	2 1 1 1 3
+c b b b b	2 1 1 1 1
+c b b b c	2 1 1 1 2
+c b b c a	2 1 1 2 3
+c b b c b	2 1 1 2 1
+c b b c c	2 1 1 2 2
+c b c a a	2 1 2 3 3
+c b c a b	2 1 2 3 1
+c b c a c	2 1 2 3 2
+c b c b a	2 1 2 1 3
+( c b c . b . a )	2 1 2 1 3
+c b c b b	2 1 2 1 1
+c b c b c	2 1 2 1 2
+c b c c a	2 1 2 2 3
+[ c b c c a ]	2 1 2 2 3
+c b c c b	2 1 2 2 1
+c b c c c	2 1 2 2 2
+( c . b . c . c c )	2 1 2 2 2
+c c a a a	2 2 3 3 3
+c c a a b	2 2 3 3 1
+c c a a c	2 2 3 3 2
+c c a b a	2 2 3 1 3
+c c a b b	2 2 3 1 1
+c c a b c	2 2 3 1 2
+c c a c a	2 2 3 2 3
+c c a c b	2 2 3 2 1
+c c a c c	2 2 3 2 2
+( c c , a c c )	2 2 3 2 2
+c c b a a	2 2 1 3 3
+c c b a b	2 2 1 3 1
+c c b a c	2 2 1 3 2
+c c b b a	2 2 1 1 3
+c _ c _ b _ b a	2 2 1 1 3
+c c b b b	2 2 1 1 1
+c c b b c	2 2 1 1 2
+c c b c a	2 2 1 2 3
+c c b c b	2 2 1 2 1
+c c b c c	2 2 1 2 2
+c c c a a	2 2 2 3 3
+c _ c _ c a _ a	2 2 2 3 3
+c c c a b	2 2 2 3 1
+[ c c c a b ]	2 2 2 3 1
+c c c a c	2 2 2 3 2
+c c c b a	2 2 2 1 3
+c c c b b	2 2 2 1 1
+[ c c c b b ]	2 2 2 1 1
+c c c b c	2 2 2 1 2
+c c c c a	2 2 2 2 3
+( c c c c a )	2 2 2 2 3
+c c c c b	2 2 2 2 1
+c c c c c	2 2 2 2 2
+[ c c . c c . c ]	2 2 2 2 2
+a a a a a a	3 3 3 3 3 3
+a a a a a b	3 3 3 3 3 1
+a a a a a c	3 3 3 3 3 2
+a a a a b a	3 3 3 3 1 3
+a a a a b b	3 3 3 3 1 1
+( a a a a b b )	3 3 3 3 1 1
+a a a a b c	3 3 3 3 1 2
+a a a a c a	3 3 3 3 2 3
+( a a a a c a )	3 3 3 3 2 3
+a a a a c b	3 3 3 3 2 1
+a a a a c c	3 3 3 3 2 2
+[ a a a a c c ]	3 3 3 3 2 2
+a a a b a a	3 3 3 1 3 3
+a a a b a b	3 3 3 1 3 1
+a a a b a c	3 3 3 1 3 2
+a a a b b a	3 3 3 1 1 3
+a a a b b b	3 3 3 1 1 1
+a a a b b c	3 3 3 1 1 2
+a a a b c a	3 3 3 1 2 3
+a a a b c b	3 3 3 1 2 1
+a a a b c c	3 3 3 1 2 2
+[ a a a b c c ]	3 3 3 1 2 2
+a a a c a a	3 3 3 2 3 3
+a a a c a b	3 3 3 2 3 1
+a a a c a c	3 3 3 2 3 2
+a a a c b a	3 3 3 2 1 3
+a a a c b b	3 3 3 2 1 1
+a a a c b c	3 3 3 2 1 2
+a a a c c a	3 3 3 2 2 3
+a a a c c b	3 3 3 2 2 1
+a a _ a c _ c b	3 3 3 2 2 1
+a a a c c c	3 3 3 2 2 2
+a a b a a a	3 3 1 3 3 3
+( a a b a a a )	3 3 1 3 3 3
+a a b a a b	3 3 1 3 3 1
+a a , b a , a , b	3 3 1 3 3 1
+a a b a a c	3 3 1 3 3 2
+a - a - b - a a - c	3 3 1 3 3 2
+a a b a b a	3 3 1 3 1 3
+( a a b a b a )	3 3 1 3 1 3
+a a b a b b	3 3 1 3 1 1
+a a b a b c	3 3 1 3 1 2
+a a b a c a	3 3 1 3 2 3
+a _ a _ b a _ c a	3 3 1 3 2 3
+a a b a c b	3 3 1 3 2 1
+( a a b a c b )	3 3 1 3 2 1
+a a b a c c	3 3 1 3 2 2
+a a b b a a	3 3 1 1 3 3
+a a b b a b	3 3 1 1 3 1
+a a b b a c	3 3 1 1 3 2
+a a b b b a	3 3 1 1 1 3
+a a b b b b	3 3 1 1 1 1
+a a b b b c	3 3 1 1 1 2
+[ a . a . b b b c ]	3 3 1 1 1 2
+a a b b c a	3 3 1 1 2 3
+a a b b c b	3 3 1 1 2 1
+a _ a b b c _ b	3 3 1 1 2 1
+a a b b c c	3 3 1 1 2 2
+a a b c a a	3 3 1 2 3 3
+a a b c a b	3 3 1 2 3 1
+[ a a b c a b ]	3 3 1 2 3 1
+a a b c a c	3 3 1 2 3 2
+a a b c b a	3 3 1 2 1 3
+a a b c b b	3 3 1 2 1 1
+[ a , a b c b b ]	3 3 1 2 1 1
+a a b c b c	3 3 1 2 1 2
+a a b c c a	3 3 1 2 2 3
+a a b c c b	3 3 1 2 2 1
+a a b c c c	3 3 1 2 2 2
+a a c a a a	3 3 2 3 3 3
+a a c a a b	3 3 2 3 3 1
+a a c a a c	3 3 2 3 3 2
+a a c a b a	3 3 2 3 1 3
+a a c a b b	3 3 2 3 1 1
+a a c a b c	3 3 2 3 1 2
+a a c a c a	3 3 2 3 2 3
+a a c a c b	3 3 2 3 2 1
+a a c a c c	3 3 2 3 2 2
+a a c b a a	3 3 2 1 3 3
+( a a c b a a )	3 3 2 1 3 3
+a a c b a b	3 3 2 1 3 1
+a , a , c b a b	3 3 2 1 3 1
+a a c b a c	3 3 2 1 3 2
+a a c b b a	3 3 2 1 1 3
+a a c b b b	3 3 2 1 1 1
+a a c b b c	3 3 2 1 1 2
+( a a , c , b , b , c )	3 3 2 1 1 2
+a a c b c a	3 3 2 1 2 3
+a a c b c b	3 3 2 1 2 1
+a a c b c c	3 3 2 1 2 2
+a a c c a a	3 3 2 2 3 3
+[ a . a c . c a . a ]	3 3 2 2 3 3
+a a c c a b	3 3 2 2 3 1
+a a c c a . b	3 3 2 2 3 1
+a a c c a c	3 3 2 2 3 2
+a a c c b a	3 3 2 2 1 3
+( a , a , c , c b , a )	3 3 2 2 1 3
+a a c c b b	3 3 2 2 1 1
+a a c c b c	3 3 2 2 1 2
+a a c c c a	3 3 2 2 2 3
+a a c c c b	3 3 2 2 2 1
+( a a c c c b )	3 3 2 2 2 1
+a a c c c c	3 3 2 2 2 2
+a b a a a a	3 1 3 3 3 3
+a b a a a b	3 1 3 3 3 1
+a b a a a c	3 1 3 3 3 2
+a b a a b a	3 1 3 3 1 3
+a b a a b b	3 1 3 3 1 1
+a b a a b c	3 1 3 3 1 2
+a b a a c a	3 1 3 3 2 3
+a b a a c b	3 1 3 3 2 1
+a b a a c c	3 1 3 3 2 2
+[ a b a a c c ]	3 1 3 3 2 2
+a b a b a a	3 1 3 1 3 3
+a b a b a b	3 1 3 1 3 1
+a b a b a c	3 1 3 1 3 2
+a b a b b a	3 1 3 1 1 3
+a b a b b b	3 1 3 1 1 1
+a b a b b c	3 1 3 1 1 2
+a b a b c a	3 1 3 1 2 3
+a b a b c b	3 1 3 1 2 1
+a b a b c c	3 1 3 1 2 2
+a b a c a a	3 1 3 2 3 3
+a b | a | c a | a	3 1 3 2 3 3
+a b a c a b	3 1 3 2 3 1
+a b a c a c	3 1 3 2 3 2
+a b a c b a	3 1 3 2 1 3
+a b a c b b	3 1 3 2 1 1
+a b a c b c	3 1 3 2 1 2
+a b a c c a	3 1 3 2 2 3
+a b a c c b	3 1 3 2 2 1
+a b a c c c	3 1 3 2 2 2
+a b a c . c c	3 1 3 2 2 2
+a b b a a a	3 1 1 3 3 3
+a b b a a b	3 1 1 3 3 1
+a b b a a c	3 1 1 3 3 2
+a b b a b a	3 1 1 3 1 3
+a b b a b b	3 1 1 3 1 1
+a b b a b c	3 1 1 3 1 2
+a b b a c a	3 1 1 3 2 3
+a b b a c b	3 1 1 3 2 1
+a b - b - a - c - b	3 1 1 3 2 1
+a b b a c c	3 1 1 3 2 2
+a b b b a a	3 1 1 1 3 3
+a _ b _ b _ b _ a a	3 1 1 1 3 3
+a b b b a b	3 1 1 1 3 1
+a b b b a c	3 1 1 1 3 2
+( a b b b a c )	3 1 1 1 3 2
+a b b b b a	3 1 1 1 1 3
+a b b b b b	3 1 1 1 1 1
+a b b b b c	3 1 1 1 1 2
+a b b b c a	3 1 1 1 2 3
+a b b b c b	3 1 1 1 2 1
+[ a b b b c b ]	3 1 1 1 2 1
+a b b b c c	3 1 1 1 2 2
+a b b c a a	3 1 1 2 3 3
+a b b c a b	3 1 1 2 3 1
+[ a b b c . a b ]	3 1 1 2 3 1
+a b b c a c	3 1 1 2 3 2
+[ a b b c a c ]	3 1 1 2 3 2
+a b b c b a	3 1 1 2 1 3
+a b b c b b	3 1 1 2 1 1
+a b b c b c	3 1 1 2 1 2
+a b b c c a	3 1 1 2 2 3
+a b b c c b	3 1 1 2 2 1
+a b b c c c	3 1 1 2 2 2
+a b c a a a	3 1 2 3 3 3
+a b c a a b	3 1 2 3 3 1
+a b c a a c	3 1 2 3 3 2
+a b c a b a	3 1 2 3 1 3
+a b c a b b	3 1 2 3 1 1
+a b c a c a	3 1 2 3 2 3
+a b c a c b	3 1 2 3 2 1
+a b c a c c	3 1 2 3 2 2
+a b c b a a	3 1 2 1 3 3
+[ a b c b a a ]	3 1 2 1 3 3
+a b c b a b	3 1 2 1 3 1
+a b . c . b a b	3 1 2 1 3 1
+a b c b a c	3 1 2 1 3 2
+a b c b b a	3 1 2 1 1 3
+a b c b b b	3 1 2 1 1 1
+a b c b b c	3 1 2 1 1 2
+a b c b c a	3 1 2 1 2 3
+a b _ c _ b _ c _ a	3 1 2 1 2 3
+a b c b c b	3 1 2 1 2 1
+a b c b c c	3 1 2 1 2 2
+a b c c a a	3 1 2 2 3 3
+a b c c a b	3 1 2 2 3 1
+a b c c a c	3 1 2 2 3 2
+a b c c b a	3 1 2 2 1 3
+a b c c b b	3 1 2 2 1 1
+a b c c b c	3 1 2 2 1 2
+a b c c c a	3 1 2 2 2 3
+a b c c c b	3 1 2 2 2 1
+a b c c c c	3 1 2 2 2 2
+a c a a a a	3 2 3 3 3 3
+a c a a a b	3 2 3 3 3 1
+a c a a a c	3 2 3 3 3 2
+a c a a b a	3 2 3 3 1 3
+a c a a b b	3 2 3 3 1 1
+( a . c a a b . b )	3 2 3 3 1 1
+a c a a b c	3 2 3 3 1 2
+a c a a c a	3 2 3 3 2 3
+a c a a c b	3 2 3 3 2 1
+a c a a c c	3 2 3 3 2 2
+a c a b a a	3 2 3 1 3 3
+a c a b a b	3 2 3 1 3 1
+a c a b a c	3 2 3 1 3 2
+a c a b b a	3 2 3 1 1 3
+a c a b b b	3 2 3 1 1 1
+a c a b b c	3 2 3 1 1 2
+a c a b c a	3 2 3 1 2 3
+a c a b c b	3 2 3 1 2 1
+a c a b c c	3 2 3 1 2 2
+a c a c a a	3 2 3 2 3 3
+a c a c a b	3 2 3 2 3 1
+a c a c a c	3 2 3 2 3 2
+a c a c b a	3 2 3 2 1 3
+a c a c b b	3 2 3 2 1 1
+a c a c b c	3 2 3 2 1 2
+a c a c c a	3 2 3 2 2 3
+a c a c c b	3 2 3 2 2 1
+a c a c c c	3 2 3 2 2 2
+a c b a a a	3 2 1 3 3 3
+a c b a a b	3 2 1 3 3 1
+a , c b , a , a b	3 2 1 3 3 1
+a c b a a c	3 2 1 3 3 2
+a c b a b a	3 2 1 3 1 3
+( a c b a b a )	3 2 1 3 1 3
+a c b a b b	3 2 1 3 1 1
+a c b a b c	3 2 1 3 1 2
+a c b a c a	3 2 1 3 2 3
+a c b a c b	3 2 1 3 2 1
+a c b a c c	3 2 1 3 2 2
+a c b b a a	3 2 1 1 3 3
+a c b b a b	3 2 1 1 3 1
+a . c b b . a . b	3 2 1 1 3 1
+a c b b a c	3 2 1 1 3 2
+a c b b b a	3 2 1 1 1 3
+a c b b b b	3 2 1 1 1 1
+a c b b b c	3 2 1 1 1 2
+( a c b b b c )	3 2 1 1 1 2
+a c b b c a	3 2 1 1 2 3
+a c b b c b	3 2 1 1 2 1
+a c b b c c	3 2 1 1 2 2
+a c b c a a	3 2 1 2 3 3
+a c b c a b	3 2 1 2 3 1
+a c b c a c	3 2 1 2 3 2
+[ a c | b | c | a c ]	3 2 1 2 3 2
+a c b c b a	3 2 1 2 1 3
+a c b c b b	3 2 1 2 1 1
+a c b c b c	3 2 1 2 1 2
+a c b c c a	3 2 1 2 2 3
+a c b c c b	3 2 1 2 2 1
+a c b c c c	3 2 1 2 2 2
+a . c b . c c c	3 2 1 2 2 2
+a c c a a a	3 2 2 3 3 3
+a c c a a b	3 2 2 3 3 1
+a c c a a c	3 2 2 3 3 2
+a c c a b a	3 2 2 3 1 3
+a c c a b b	3 2 2 3 1 1
+a c c a b c	3 2 2 3 1 2
+[ a | c c a | b | c ]	3 2 2 3 1 2
+a c c a c a	3 2 2 3 2 3
+( a c c a c a )	3 2 2 3 2 3
+a c c a c b	3 2 2 3 2 1
+a c c a c c	3 2 2 3 2 2
+a c c b a a	3 2 2 1 3 3
+a c c b a b	3 2 2 1 3 1
+a c c b a c	3 2 2 1 3 2
+a c c b b a	3 2 2 1 1 3
+a c c b b b	3 2 2 1 1 1
+a _ c _ c _ b b _ b	3 2 2 1 1 1
+a c c b b c	3 2 2 1 1 2
+a c c b c a	3 2 2 1 2 3
+a c c b c b	3 2 2 1 2 1
+a c c b c c	3 2 2 1 2 2
+a c c c a a	3 2 2 2 3 3
+a c c c a b	3 2 2 2 3 1
+a c c c a c	3 2 2 2 3 2
+a c c c b a	3 2 2 2 1 3
+[ a c . c c b a ]	3 2 2 2 1 3
+a c c c b b	3 2 2 2 1 1
+a c c c b c	3 2 2 2 1 2
+a c c c c a	3 2 2 2 2 3
+a c c c c b	3 2 2 2 2 1
+a c c c c c	3 2 2 2 2 2
+b a a a a a	1 3 3 3 3 3
+b a a a a b	1 3 3 3 3 1
+b a a a a c	1 3 3 3 3 2
+b a a a b a	1 3 3 3 1 3
+b a a a b b	1 3 3 3 1 1
+[ b a a a b b ]	1 3 3 3 1 1
+b a a a b c	1 3 3 3 1 2
+b a a a c a	1 3 3 3 2 3
+b a a a c b	1 3 3 3 2 1
+b a a a c c	1 3 3 3 2 2
+b a a b a a	1 3 3 1 3 3
+b a a b a b	1 3 3 1 3 1
+b a a b a c	1 3 3 1 3 2
+b a a b b a	1 3 3 1 1 3
+b a a b b b	1 3 3 1 1 1
+( b a a b b b )	1 3 3 1 1 1
+b a a b b c	1 3 3 1 1 2
+b a a b c a	1 3 3 1 2 3
+b a a b c b	1 3 3 1 2 1
+b a a b c c	1 3 3 1 2 2
+b a a c a a	1 3 3 2 3 3
+b a a c a b	1 3 3 2 3 1
+b a a c a c	1 3 3 2 3 2
+b a a c b a	1 3 3 2 1 3
+b a a c b b	1 3 3 2 1 1
+b a a c b c	1 3 3 2 1 2
+b a a c c a	1 3 3 2 2 3
+[ b a a c c a ]	1 3 3 2 2 3
+b a a c c b	1 3 3 2 2 1
+b a a c c c	1 3 3 2 2 2
+b a b a a a	1 3 1 3 3 3
+b a b a a b	1 3 1 3 3 1
+( b a b a a b )	1 3 1 3 3 1
+b a b a a c	1 3 1 3 3 2
+b a , b a a , c	1 3 1 3 3 2
+b a b a b a	1 3 1 3 1 3
+( b a b a b a )	1 3 1 3 1 3
+b a b a b b	1 3 1 3 1 1
+b a b a b c	1 3 1 3 1 2
+b a b a c a	1 3 1 3 2 3
+b a b a c b	1 3 1 3 2 1
+b a b a c c	1 3 1 3 2 2
+b a b b a a	1 3 1 1 3 3
+b a b b a b	1 3 1 1 3 1
+b a b b a c	1 3 1 1 3 2
+b a b b b a	1 3 1 1 1 3
+b a b b b b	1 3 1 1 1 1
+b a b . b b . b	1 3 1 1 1 1
+b a b b b c	1 3 1 1 1 2
+[ b a b b b c ]	1 3 1 1 1 2
+b a b b c a	1 3 1 1 2 3
+b a b b c b	1 3 1 1 2 1
+b a b b c c	1 3 1 1 2 2
+b a b c a a	1 3 1 2 3 3
+b a b c a b	1 3 1 2 3 1
+b a b c a c	1 3 1 2 3 2
+b a b c b a	1 3 1 2 1 3
+b a b c b b	1 3 1 2 1 1
+b , a , b , c , b , b	1 3 1 2 1 1
+b a b c b c	1 3 1 2 1 2
+b a b c c a	1 3 1 2 2 3
+b a b c c b	1 3 1 2 2 1
+b a b c c c	1 3 1 2 2 2
+b a c a a a	1 3 2 3 3 3
+b a c a a b	1 3 2 3 3 1
+b a c a a c	1 3 2 3 3 2
+b a c a b a	1 3 2 3 1 3
+b a c a b b	1 3 2 3 1 1
+( b a c a b b )	1 3 2 3 1 1
+b a c a b c	1 3 2 3 1 2
+b | a | c a b | c	1 3 2 3 1 2
+b a c a c a	1 3 2 3 2 3
+b a c a c b	1 3 2 3 2 1
+b a c a c c	1 3 2 3 2 2
+b a c a , c , c	1 3 2 3 2 2
+b a c b a a	1 3 2 1 3 3
+[ b a c b a a ]	1 3 2 1 3 3
+b a c b a b	1 3 2 1 3 1
+b a c b a c	1 3 2 1 3 2
+b a c b b a	1 3 2 1 1 3
+b a c b b b	1 3 2 1 1 1
+( b a c b b b )	1 3 2 1 1 1
+b a c b b c	1 3 2 1 1 2
+b a c b c a	1 3 2 1 2 3
+b a c b c b	1 3 2 1 2 1
+b a c b c c	1 3 2 1 2 2
+[ b a c b c c ]	1 3 2 1 2 2
+b a c c a a	1 3 2 2 3 3
+b a c c a b	1 3 2 2 3 1
+b , a c c , a b	1 3 2 2 3 1
+b a c c a c	1 3 2 2 3 2
+b a c c b a	1 3 2 2 1 3
+b a c c b b	1 3 2 2 1 1
+b a c c b c	1 3 2 2 1 2
+b a c c c a	1 3 2 2 2 3
+[ b a c , c , c a ]	1 3 2 2 2 3
+b a c c c b	1 3 2 2 2 1
+b a c c c c	1 3 2 2 2 2
+b b a a a a	1 1 3 3 3 3
+b b a a a b	1 1 3 3 3 1
+b b a a a c	1 1 3 3 3 2
+( b | b a a | a | c )	1 1 3 3 3 2
+b b a a b a	1 1 3 3 1 3
+[ b | b a a | b a ]	1 1 3 3 1 3
+b b a a b b	1 1 3 3 1 1
+b b a a b c	1 1 3 3 1 2
+b b a a c a	1 1 3 3 2 3
+b b a a c b	1 1 3 3 2 1
+b b a a c c	1 1 3 3 2 2
+b b a b a a	1 1 3 1 3 3
+b b a b a b	1 1 3 1 3 1
+b b a b a c	1 1 3 1 3 2
+b , b a , b a c	1 1 3 1 3 2
+b b a b b a	1 1 3 1 1 3
+[ b b a b b a ]	1 1 3 1 1 3
+b b a b b b	1 1 3 1 1 1
+b b a b b c	1 1 3 1 1 2
+b b a b c a	1 1 3 1 2 3
+[ b b a b c a ]	1 1 3 1 2 3
+b b a b c b	1 1 3 1 2 1
+b b a b c c	1 1 3 1 2 2
+b _ b a b c _ c	1 1 3 1 2 2
+b b a c a a	1 1 3 2 3 3
+b b a c a b	1 1 3 2 3 1
+b b a c a c	1 1 3 2 3 2
+b - b - a - c - a c	1 1 3 2 3 2
+b b a c b a	1 1 3 2 1 3
+b b a c b b	1 1 3 2 1 1
+( b b a c b b )	1 1 3 2 1 1
+b b a c b c	1 1 3 2 1 2
+b b a c c a	1 1 3 2 2 3
+b b a c c b	1 1 3 2 2 1
+[ b b a c c b ]	1 1 3 2 2 1
+b b a c c c	1 1 3 2 2 2
+b b b a a a	1 1 1 3 3 3
+b b b a a b	1 1 1 3 3 1
+b b b a a c	1 1 1 3 3 2
+b b b a b a	1 1 1 3 1 3
+b b b a b b	1 1 1 3 1 1
+b b b a b c	1 1 1 3 1 2
+b b b a c a	1 1 1 3 2 3
+b b _ b a _ c _ a	1 1 1 3 2 3
+b b b a c b	1 1 1 3 2 1
+b b b a c c	1 1 1 3 2 2
+b b b b a a	1 1 1 1 3 3
+( b . b b b a a )	1 1 1 1 3 3
+b b b b a b	1 1 1 1 3 1
+b b b b a c	1 1 1 1 3 2
+b b b b b a	1 1 1 1 1 3
+b b b b b b	1 1 1 1 1 1
+b b b b b c	1 1 1 1 1 2
+b b , b , b b , c	1 1 1 1 1 2
+b b b b c a	1 1 1 1 2 3
+( b b b b c a )	1 1 1 1 2 3
+b b b b c b	1 1 1 1 2 1
+b b b b c c	1 1 1 1 2 2
+b b b c a a	1 1 1 2 3 3
+b b b c a b	1 1 1 2 3 1
+[ b b b c a b ]	1 1 1 2 3 1
+b b b c a c	1 1 1 2 3 2
+b b b c b a	1 1 1 2 1 3
+b b b c b b	1 1 1 2 1 1
+b b b c b c	1 1 1 2 1 2
+b b b c c a	1 1 1 2 2 3
+b b b c c b	1 1 1 2 2 1
+b b b c c c	1 1 1 2 2 2
+b b c a a a	1 1 2 3 3 3
+b b c a a b	1 1 2 3 3 1
+b b c a a c	1 1 2 3 3 2
+b b c a b a	1 1 2 3 1 3
+b b c a b b	1 1 2 3 1 1
+b b c a b c	1 1 2 3 1 2
+b b c a c a	1 1 2 3 2 3
+b b c a c b	1 1 2 3 2 1
+b , b c a , c b	1 1 2 3 2 1
+b b c a c c	1 1 2 3 2 2
+[ b . b . c a c c ]	1 1 2 3 2 2
+b b c b a a	1 1 2 1 3 3
+b b c b a b	1 1 2 1 3 1
+b b c b a c	1 1 2 1 3 2
+b b c b b a	1 1 2 1 1 3
+b . b . c b . b . a	1 1 2 1 1 3
+b b c b b b	1 1 2 1 1 1
+b b , c b b b	1 1 2 1 1 1
+b b c b b c	1 1 2 1 1 2
+b b c b c a	1 1 2 1 2 3
+( b | b | c b c | a )	1 1 2 1 2 3
+b b c b c b	1 1 2 1 2 1
+b b c b c c	1 1 2 1 2 2
+b b c c a a	1 1 2 2 3 3
+b b c c a b	1 1 2 2 3 1
+b b c c a c	1 1 2 2 3 2
+b b c c b a	1 1 2 2 1 3
+( b b c c b a )	1 1 2 2 1 3
+b b c c b b	1 1 2 2 1 1
+b b c c b c	1 1 2 2 1 2
+b b c c c a	1 1 2 2 2 3
+b b c c | c | a	1 1 2 2 2 3
+b b c c c b	1 1 2 2 2 1
+b b c c c c	1 1 2 2 2 2
+b c a a a a	1 2 3 3 3 3
+b c . a . a a a	1 2 3 3 3 3
+b c a a a b	1 2 3 3 3 1
+b c a a a c	1 2 3 3 3 2
+b c a a b a	1 2 3 3 1 3
+b c a a b b	1 2 3 3 1 1
+b c a a b c	1 2 3 3 1 2
+b c a a c a	1 2 3 3 2 3
+b c a a c b	1 2 3 3 2 1
+b c a a c c	1 2 3 3 2 2
+b - c - a - a c - c	1 2 3 3 2 2
+b c a b a a	1 2 3 1 3 3
+b c a b a b	1 2 3 1 3 1
+b c a b a c	1 2 3 1 3 2
+b c a b b a	1 2 3 1 1 3
+[ b c a b b a ]	1 2 3 1 1 3
+b c a b b b	1 2 3 1 1 1
+b , c , a , b , b b	1 2 3 1 1 1
+b c a b b c	1 2 3 1 1 2
+b c a b c a	1 2 3 1 2 3
+[ b c a b c a ]	1 2 3 1 2 3
+b c a b c b	1 2 3 1 2 1
+b c a b c c	1 2 3 1 2 2
+b c a c a a	1 2 3 2 3 3
+b c a c a b	1 2 3 2 3 1
+b c a c a c	1 2 3 2 3 2
+b c a c b a	1 2 3 2 1 3
+b c a c b b	1 2 3 2 1 1
+b c a c b c	1 2 3 2 1 2
+b c a c c a	1 2 3 2 2 3
+b c a c c b	1 2 3 2 2 1
+b c a c c c	1 2 3 2 2 2
+b c b a a a	1 2 1 3 3 3
+b c b a a b	1 2 1 3 3 1
+b c b a a c	1 2 1 3 3 2
+b c b a b a	1 2 1 3 1 3
+b c b a b b	1 2 1 3 1 1
+( b c b a b . b )	1 2 1 3 1 1
+b c b a b c	1 2 1 3 1 2
+b . c . b . a b c	1 2 1 3 1 2
+b c b a c a	1 2 1 3 2 3
+b c b a c b	1 2 1 3 2 1
+b c b a c c	1 2 1 3 2 2
+b c b b a a	1 2 1 1 3 3
+b c b b a b	1 2 1 1 3 1
+b c b b a c	1 2 1 1 3 2
+b c b b b a	1 2 1 1 1 3
+b c b b b b	1 2 1 1 1 1
+b - c - b b - b b	1 2 1 1 1 1
+b c b b b c	1 2 1 1 1 2
+b c b b c a	1 2 1 1 2 3
+b c b b c b	1 2 1 1 2 1
+[ b c b b c b ]	1 2 1 1 2 1
+b c b b c c	1 2 1 1 2 2
+b c b c a a	1 2 1 2 3 3
+b c b c a b	1 2 1 2 3 1
+b c b c a c	1 2 1 2 3 2
+b c b c b a	1 2 1 2 1 3
+b c b c b b	1 2 1 2 1 1
+b c b c b c	1 2 1 2 1 2
+b c b c c a	1 2 1 2 2 3
+b c b c c b	1 2 1 2 2 1
+b c b c c c	1 2 1 2 2 2
+b c c a a a	1 2 2 3 3 3
+b c c a a b	1 2 2 3 3 1
+b c c a a c	1 2 2 3 3 2
+b c c a b a	1 2 2 3 1 3
+b c c a b b	1 2 2 3 1 1
+b c c a b c	1 2 2 3 1 2
+b c c a c a	1 2 2 3 2 3
+b c c a c b	1 2 2 3 2 1
+b c c a c c	1 2 2 3 2 2
+b c c b a a	1 2 2 1 3 3
+b c c b a b	1 2 2 1 3 1
+b c c b a c	1 2 2 1 3 2
+b c c b b a	1 2 2 1 1 3
+b c c b b b	1 2 2 1 1 1
+b c c b b c	1 2 2 1 1 2
+b | c | c | b | b c	1 2 2 1 1 2
+b c c b c a	1 2 2 1 2 3
+b c c b c b	1 2 2 1 2 1
+b c c b c c	1 2 2 1 2 2
+b c c c a a	1 2 2 2 3 3
+b c c c a b	1 2 2 2 3 1
+b c c c a c	1 2 2 2 3 2
+b c c c b a	1 2 2 2 1 3
+( b . c . c c b a )	1 2 2 2 1 3
+b c c c b b	1 2 2 2 1 1
+b , c , c , c b b	1 2 2 2 1 1
+b c c c b c	1 2 2 2 1 2
+[ b c c c b c ]	1 2 2 2 1 2
+b c c c c a	1 2 2 2 2 3
+b c c c c b	1 2 2 2 2 1
+b c c c c c	1 2 2 2 2 2
+c a a a a a	2 3 3 3 3 3
+c a a a a b	2 3 3 3 3 1
+( c , a a a a , b )	2 3 3 3 3 1
+c a a a a c	2 3 3 3 3 2
+c a a a b a	2 3 3 3 1 3
+c a a a b b	2 3 3 3 1 1
+( c . a . a a b . b )	2 3 3 3 1 1
+c a a a b c	2 3 3 3 1 2
+c a a a c a	2 3 3 3 2 3
+c a a a c b	2 3 3 3 2 1
+c a a a c c	2 3 3 3 2 2
+c a a b a a	2 3 3 1 3 3
+c a a b a b	2 3 3 1 3 1
+( c a a b a b )	2 3 3 1 3 1
+c a a b a c	2 3 3 1 3 2
+c | a | a b a c	2 3 3 1 3 2
+c a a b b a	2 3 3 1 1 3
+c a a b b b	2 3 3 1 1 1
+c a a b b c	2 3 3 1 1 2
+c a a b c a	2 3 3 1 2 3
+c a a b c b	2 3 3 1 2 1
+c a a b c c	2 3 3 1 2 2
+( c | a | a b | c | c )	2 3 3 1 2 2
+c a a c a a	2 3 3 2 3 3
+c a a c a b	2 3 3 2 3 1
+[ c a a c a b ]	2 3 3 2 3 1
+c a a c a c	2 3 3 2 3 2
+c a a c b a	2 3 3 2 1 3
+c a a c b b	2 3 3 2 1 1
+c a a c b c	2 3 3 2 1 2
+c a a c c a	2 3 3 2 2 3
+c a a c c b	2 3 3 2 2 1
+c a a c c c	2 3 3 2 2 2
+c a b a a a	2 3 1 3 3 3
+c a _ b _ a _ a _ a	2 3 1 3 3 3
+c a b a a b	2 3 1 3 3 1
+c a b a a c	2 3 1 3 3 2
+[ c a . b . a a . c ]	2 3 1 3 3 2
+c a b a b a	2 3 1 3 1 3
+[ c a b a b a ]	2 3 1 3 1 3
+c a b a b b	2 3 1 3 1 1
+c a b a b c	2 3 1 3 1 2
+c a b a c a	2 3 1 3 2 3
+c a b a c b	2 3 1 3 2 1
+c a b a c c	2 3 1 3 2 2
+c a b b a a	2 3 1 1 3 3
+c , a , b , b , a , a	2 3 1 1 3 3
+c a b b a b	2 3 1 1 3 1
+( c . a b b . a b )	2 3 1 1 3 1
+c a b b a c	2 3 1 1 3 2
+c a b b b a	2 3 1 1 1 3
+c a b b b b	2 3 1 1 1 1
+c a b b b c	2 3 1 1 1 2
+[ c a b b b c ]	2 3 1 1 1 2
+c a b b c a	2 3 1 1 2 3
+c a b b c b	2 3 1 1 2 1
+c a b b c c	2 3 1 1 2 2
+c a | b b | c c	2 3 1 1 2 2
+c a b c a a	2 3 1 2 3 3
+c a b c a b	2 3 1 2 3 1
+c a b c a c	2 3 1 2 3 2
+c a b c b a	2 3 1 2 1 3
+c a b c b b	2 3 1 2 1 1
+c a b c b c	2 3 1 2 1 2
+c a b c c a	2 3 1 2 2 3
+c a b c c b	2 3 1 2 2 1
+[ c a b c c b ]	2 3 1 2 2 1
+c a b c c c	2 3 1 2 2 2
+c a c a a a	2 3 2 3 3 3
+c a c a a b	2 3 2 3 3 1
+c a c a a c	2 3 2 3 3 2
+c a c a b a	2 3 2 3 1 3
+c - a c - a b a	2 3 2 3 1 3
+c a c a b b	2 3 2 3 1 1
+c a c a b c	2 3 2 3 1 2
+c a c a c a	2 3 2 3 2 3
+[ c a c a c a ]	2 3 2 3 2 3
+c a c a c b	2 3 2 3 2 1
+c a c a c c	2 3 2 3 2 2
+c a c b a a	2 3 2 1 3 3
+( c a c b a a )	2 3 2 1 3 3
+c a c b a b	2 3 2 1 3 1
+c a c b a c	2 3 2 1 3 2
+c a c b b a	2 3 2 1 1 3
+( c a c b b , a )	2 3 2 1 1 3
+c a c b b b	2 3 2 1 1 1
+c a c b b c	2 3 2 1 1 2
+c a c b c a	2 3 2 1 2 3
+c a c b c b	2 3 2 1 2 1
+c a c b c c	2 3 2 1 2 2
+c a c c a a	2 3 2 2 3 3
+c a c c a b	2 3 2 2 3 1
+c a c c a c	2 3 2 2 3 2
+c a c c b a	2 3 2 2 1 3
+c a c c b b	2 3 2 2 1 1
+c a c c b c	2 3 2 2 1 2
+c a c c c a	2 3 2 2 2 3
+c a c c c b	2 3 2 2 2 1
+c _ a _ c c _ c b	2 3 2 2 2 1
+c a c c c c	2 3 2 2 2 2
+c b a a a a	2 1 3 3 3 3
+c b a a a b	2 1 3 3 3 1
+c b a a a c	2 1 3 3 3 2
+c b a a b a	2 1 3 3 1 3
+c . b a . a . b a	2 1 3 3 1 3
+c b a a b b	2 1 3 3 1 1
+[ c b a a b b ]	2 1 3 3 1 1
+c b a a b c	2 1 3 3 1 2
+c b a a c a	2 1 3 3 2 3
+c b a a c b	2 1 3 3 2 1
+c b a a c c	2 1 3 3 2 2
+c b a b a a	2 1 3 1 3 3
+c b a b a b	2 1 3 1 3 1
+( c b a b a b )	2 1 3 1 3 1
+c b a b a c	2 1 3 1 3 2
+c b a b b a	2 1 3 1 1 3
+c _ b _ a b _ b _ a	2 1 3 1 1 3
+c b a b b b	2 1 3 1 1 1
+c b a b b c	2 1 3 1 1 2
+( c b | a | b | b c )	2 1 3 1 1 2
+c b a b c a	2 1 3 1 2 3
+c b a b c b	2 1 3 1 2 1
+c b a b c c	2 1 3 1 2 2
+c b a c a a	2 1 3 2 3 3
+c b a c a b	2 1 3 2 3 1
+c - b - a c a b	2 1 3 2 3 1
+c b a c a c	2 1 3 2 3 2
+c b a c b a	2 1 3 2 1 3
+c b a c b b	2 1 3 2 1 1
+c | b a | c | b | b	2 1 3 2 1 1
+c b a c b c	2 1 3 2 1 2
+c b a c c a	2 1 3 2 2 3
+[ c b a c c a ]	2 1 3 2 2 3
+c b a c c b	2 1 3 2 2 1
+( c b a c c b )	2 1 3 2 2 1
+c b a c c c	2 1 3 2 2 2
+c b b a a a	2 1 1 3 3 3
+[ c b b a a , a ]	2 1 1 3 3 3
+c b b a a b	2 1 1 3 3 1
+c b b a a c	2 1 1 3 3 2
+c b b a b a	2 1 1 3 1 3
+c b b a b b	2 1 1 3 1 1
+c b b a b c	2 1 1 3 1 2
+c - b b a - b - c	2 1 1 3 1 2
+c b b a c a	2 1 1 3 2 3
+c b b a c b	2 1 1 3 2 1
+c b b a c c	2 1 1 3 2 2
+c b b b a a	2 1 1 1 3 3
+[ c b b b a a ]	2 1 1 1 3 3
+c b b b a b	2 1 1 1 3 1
+c b b b a c	2 1 1 1 3 2
+c b b b b a	2 1 1 1 1 3
+c b b b b b	2 1 1 1 1 1
+[ c | b b b b b ]	2 1 1 1 1 1
+c b b b b c	2 1 1 1 1 2
+c b b b c a	2 1 1 1 2 3
+c b b b c b	2 1 1 1 2 1
+c b b b c c	2 1 1 1 2 2
+c b b c a a	2 1 1 2 3 3
+c b b c a b	2 1 1 2 3 1
+c b b c a c	2 1 1 2 3 2
+( c . b . b c a . c )	2 1 1 2 3 2
+c b b c b a	2 1 1 2 1 3
+c b b c b b	2 1 1 2 1 1
+c b b c b c	2 1 1 2 1 2
+( c | b b c b c )	2 1 1 2 1 2
+c b b c c a	2 1 1 2 2 3
+[ c b b c c a ]	2 1 1 2 2 3
+c b b c c b	2 1 1 2 2 1
+c b b c c c	2 1 1 2 2 2
+c b c a a a	2 1 2 3 3 3
+c b c a a b	2 1 2 3 3 1
+( c b c a a b )	2 1 2 3 3 1
+c b c a a c	2 1 2 3 3 2
+c b c a b a	2 1 2 3 1 3
+c b c a b b	2 1 2 3 1 1
+c b c a b c	2 1 2 3 1 2
+c b c a c a	2 1 2 3 2 3
+c b c a c b	2 1 2 3 2 1
+c b c a c c	2 1 2 3 2 2
+c b c b a a	2 1 2 1 3 3
+c b . c b . a . a	2 1 2 1 3 3
+c b c b a b	2 1 2 1 3 1
+c b c b a c	2 1 2 1 3 2
+c b c b b a	2 1 2 1 1 3
+c b c b b b	2 1 2 1 1 1
+[ c b | c b | b b ]	2 1 2 1 1 1
+c b c b b c	2 1 2 1 1 2
+c b c b c a	2 1 2 1 2 3
+c b c b c b	2 1 2 1 2 1
+c b c b c c	2 1 2 1 2 2
+c b c c a a	2 1 2 2 3 3
+c b c c a b	2 1 2 2 3 1
+c b c c a c	2 1 2 2 3 2
+c b c c b a	2 1 2 2 1 3
+c b c c b b	2 1 2 2 1 1
+c b c c b c	2 1 2 2 1 2
+c b c c c a	2 1 2 2 2 3
+c b c c c b	2 1 2 2 2 1
+c b c c c c	2 1 2 2 2 2
+c c a a a a	2 2 3 3 3 3
+c c a a a b	2 2 3 3 3 1
+c c a a a c	2 2 3 3 3 2
+c , c a a a c	2 2 3 3 3 2
+c c a a b a	2 2 3 3 1 3
+c c a a b b	2 2 3 3 1 1
+c c a a b c	2 2 3 3 1 2
+c c a a c a	2 2 3 3 2 3
+c c a a c b	2 2 3 3 2 1
+( c c a a c b )	2 2 3 3 2 1
+c c a a c c	2 2 3 3 2 2
+c c a b a a	2 2 3 1 3 3
+c c a b a b	2 2 3 1 3 1
+c c a b a c	2 2 3 1 3 2
+( c c a b a c )	2 2 3 1 3 2
+c c a b b a	2 2 3 1 1 3
+[ c | c | a b | b a ]	2 2 3 1 1 3
+c c a b b b	2 2 3 1 1 1
+c , c , a b , b , b	2 2 3 1 1 1
+c c a b b c	2 2 3 1 1 2
+c c a b c a	2 2 3 1 2 3
+c c a b c b	2 2 3 1 2 1
+c c a b c c	2 2 3 1 2 2
+c _ c a _ b _ c c	2 2 3 1 2 2
+c c a c a a	2 2 3 2 3 3
+c c a c a b	2 2 3 2 3 1
+c c a c a c	2 2 3 2 3 2
+c c a c b a	2 2 3 2 1 3
+c c a c b b	2 2 3 2 1 1
+c _ c _ a _ c b b	2 2 3 2 1 1
+c c a c b c	2 2 3 2 1 2
+c c a c c a	2 2 3 2 2 3
+c c a c c b	2 2 3 2 2 1
+[ c c a c c b ]	2 2 3 2 2 1
+c c a c c c	2 2 3 2 2 2
+c c b a a a	2 2 1 3 3 3
+c c b a a b	2 2 1 3 3 1
+c c b a a c	2 2 1 3 3 2
+c c b a b a	2 2 1 3 1 3
+( c c b a b a )	2 2 1 3 1 3
+c c b a b b	2 2 1 3 1 1
+c c b a b c	2 2 1 3 1 2
+c c b a c a	2 2 1 3 2 3
+c c b a c b	2 2 1 3 2 1
+( c c b a c b )	2 2 1 3 2 1
+c c b a c c	2 2 1 3 2 2
+c c b b a a	2 2 1 1 3 3
+[ c c , b , b a a ]	2 2 1 1 3 3
+c c b b a b	2 2 1 1 3 1
+c | c b b a b	2 2 1 1 3 1
+c c b b a c	2 2 1 1 3 2
+c c b b b a	2 2 1 1 1 3
+c c b b b b	2 2 1 1 1 1
+c c b b b c	2 2 1 1 1 2
+c c b b c a	2 2 1 1 2 3
+c c b b c b	2 2 1 1 2 1
+c c b b c c	2 2 1 1 2 2
+c c b c a a	2 2 1 2 3 3
+c - c - b - c - a a	2 2 1 2 3 3
+c c b c a b	2 2 1 2 3 1
+c c b c a c	2 2 1 2 3 2
+[ c c b c a c ]	2 2 1 2 3 2
+c c b c b a	2 2 1 2 1 3
+c c b c b b	2 2 1 2 1 1
+c c b c b c	2 2 1 2 1 2
+c c b c c a	2 2 1 2 2 3
+c c b c c b	2 2 1 2 2 1
+c c b c c c	2 2 1 2 2 2
+c c c a a a	2 2 2 3 3 3
+c c c a a b	2 2 2 3 3 1
+c c c a a c	2 2 2 3 3 2
+[ c c . c a a c ]	2 2 2 3 3 2
+c c c a b a	2 2 2 3 1 3
+c c c a b b	2 2 2 3 1 1
+c c c a b c	2 2 2 3 1 2
+c c c a c a	2 2 2 3 2 3
+c c c a c b	2 2 2 3 2 1
+c c c a c c	2 2 2 3 2 2
+c , c , c , a c c	2 2 2 3 2 2
+c c c b a a	2 2 2 1 3 3
+( c c c b a a )	2 2 2 1 3 3
+c c c b a b	2 2 2 1 3 1
+c c - c - b - a - b	2 2 2 1 3 1
+c c c b a c	2 2 2 1 3 2
+c c c b b a	2 2 2 1 1 3
+c c c b b b	2 2 2 1 1 1
+c c c b b c	2 2 2 1 1 2
+c c c b c a	2 2 2 1 2 3
+c c c | b | c | a	2 2 2 1 2 3
+c c c b c b	2 2 2 1 2 1
+c c c b c c	2 2 2 1 2 2
+c c c c a a	2 2 2 2 3 3
+c c c c a b	2 2 2 2 3 1
+c c c c , a b	2 2 2 2 3 1
+c c c c a c	2 2 2 2 3 2
+c c c c b a	2 2 2 2 1 3
+[ c c c c b a ]	2 2 2 2 1 3
+c c c c b b	2 2 2 2 1 1
+c c c c b c	2 2 2 2 1 2
+c c c c c a	2 2 2 2 2 3
+c c c c c . a	2 2 2 2 2 3
+c c c c c b	2 2 2 2 2 1
+c c c c c c	2 2 2 2 2 2
+a b a b a b	3 1 3 1 3 1
+b c b c b c	1 2 1 2 1 2
+a b c a b c a b c	3 1 2 3 1 2 3 1 2
+a b c a b c a	3 1 2 3 1 2 3
+a a b b c c	3 3 1 1 2 2
+a b b c c c	3 1 1 2 2 2
+a a a b b c	3 3 3 1 1 2
