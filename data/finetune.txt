@@ -1,0 +1,12 @@
+abc - 312
+a bc - 3 12
+ab c - 31 2
+a b c - 3 1 2
+aa - 33
+bb - 11
+cc - 22
+a a - 3 3
+b b - 1 1
+c c - 2 2
+abcabc - 312312
+a b c a b c - 3 1 2 3 1 2
