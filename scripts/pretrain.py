@@ -22,7 +22,7 @@ IGNORE_INDEX = -100
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Mini-transformer pretraining script")
-    parser.add_argument("--task", choices=["mlm", "clm"], default=pretrain_config.TASK)
+    parser.add_argument("--task", choices=["mlm", "clm", "seq2seq"], default=pretrain_config.TASK)
     parser.add_argument("--corpus", type=Path, default=pretrain_config.CORPUS_PATH)
     parser.add_argument("--output", type=Path, default=pretrain_config.OUTPUT_PATH)
     parser.add_argument("--epochs", type=int, default=pretrain_config.NUM_EPOCHS)
@@ -77,6 +77,16 @@ def train() -> None:
             if args.task == "mlm":
                 attention_mask = batch["attention_mask"].to(device)
                 logits = model(input_ids, attention_mask=attention_mask)
+            elif args.task == "seq2seq":
+                decoder_input_ids = batch["decoder_input_ids"].to(device)
+                attention_mask = batch["attention_mask"].to(device)
+                decoder_attention_mask = batch["decoder_attention_mask"].to(device)
+                logits = model(
+                    input_ids=input_ids,
+                    decoder_input_ids=decoder_input_ids,
+                    attention_mask=attention_mask,
+                    decoder_attention_mask=decoder_attention_mask,
+                )
             else:
                 look_ahead_mask = batch["look_ahead_mask"].to(device)
                 logits = model(input_ids, look_ahead_mask=look_ahead_mask)

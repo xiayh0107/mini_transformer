@@ -11,6 +11,7 @@ from torch.utils.data import Dataset
 from config.config import config
 from .mlm_task import MaskedLanguageModelingTask
 from .clm_task import CausalLanguageModelingTask
+from .seq2seq_task import Seq2SeqModelingTask
 
 
 class LineByLineTextDataset(Dataset):
@@ -90,7 +91,7 @@ class LineByLineTextDataset(Dataset):
 
 
 class PretrainDataCollator:
-    """Switch between MLM and CLM batch preparation logic."""
+    """Switch between MLM, CLM, and Seq2Seq batch preparation logic."""
 
     def __init__(self, task: str, mask_prob: float = 0.15, vocab: Dict[str, int] | None = None) -> None:
         vocab = vocab or config.VOCAB
@@ -99,12 +100,20 @@ class PretrainDataCollator:
         special_token_ids = [vocab["<pad>"], vocab["<sos>"], vocab["<eos>"]]
 
         task = task.lower()
-        if task not in {"mlm", "clm"}:
-            raise ValueError("task must be either 'mlm' or 'clm'")
+        if task not in {"mlm", "clm", "seq2seq"}:
+            raise ValueError("task must be 'mlm', 'clm', or 'seq2seq'")
         self.task = task
 
         if task == "mlm":
             self.impl = MaskedLanguageModelingTask(
+                vocab_size=len(vocab),
+                mask_token_id=mask_token_id,
+                pad_token_id=pad_token_id,
+                special_token_ids=special_token_ids,
+                mask_prob=mask_prob,
+            )
+        elif task == "seq2seq":
+            self.impl = Seq2SeqModelingTask(
                 vocab_size=len(vocab),
                 mask_token_id=mask_token_id,
                 pad_token_id=pad_token_id,
