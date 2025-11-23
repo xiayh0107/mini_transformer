@@ -2,6 +2,8 @@
 
 🌟 **极简但工业级的 Transformer 教学仓库** —— 用可拆可拼的代码积木理解序列到序列模型。
 
+📚 **交互式文档**：[https://xiayh0107.github.io/mini_transformer/](https://xiayh0107.github.io/mini_transformer/)
+
 ## 📁 项目结构一览
 
 ```text
@@ -54,6 +56,19 @@ miniTransformer/
 
 这样安排，初学者可以像拆乐高一样逐个文件理解和改造，资深同学也能直接定位到需要拓展的层级。
 
+## 📚 交互式文档
+
+本项目提供了基于 HTML 的交互式原理文档，部署在 GitHub Pages：
+👉 [https://xiayh0107.github.io/mini_transformer/](https://xiayh0107.github.io/mini_transformer/)
+
+包含：
+
+- Attention 机制可视化
+- Positional Encoding 演示
+- Layer Norm 原理
+- Masked Attention 动画
+- 等等...
+
 ## 🎯 设计哲学
 
 - **单一职责**：每个文件只关注一个问题，降低认知负担
@@ -103,12 +118,14 @@ python quick_start.py
 
 或在 `src/mini_transformer.py` 中阅读最小复现版的训练流程。
 
-### 5. 预训练（MLM / CLM）
+### 5. 预训练（MLM / CLM / Seq2Seq）
 
 ```bash
 python scripts/pretrain.py --task mlm --max-len 64 --epochs 10
 # 或切换为自回归：
 python scripts/pretrain.py --task clm --max-len 64 --epochs 10
+# 或切换为序列到序列（同时 Encode 和 Decode）：
+python scripts/pretrain.py --task seq2seq --max-len 64 --epochs 10
 ```
 
 该脚本默认读取 `config/pretrain_config.py` 中的参数，复用 `data/data.txt` 作为无监督语料，
