@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - 文本生成 (Generation)</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71; /* Green for Generation */
+            --secondary-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #eafaf1;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .viz-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .sequence-display {
+            display: flex;
+            gap: 10px;
+            font-size: 1.2em;
+            padding: 15px;
+            background: #eee;
+            border-radius: 8px;
+            min-width: 300px;
+            justify-content: center;
+        }
+
+        .token {
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .token.new {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 250px;
+            position: relative;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        button:hover { background: #27ae60; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Autoregressive Generation (自回归生成)</h1>
+    <p>对应代码: <code>src/mini_transformer.py</code> 中的 <code>autoregressive_decode</code></p>
+
+    <div class="explanation">
+        <strong>一步一个脚印。</strong> Transformer 生成文本时，是逐个词进行的。
+        <br>
+        每一步，模型接收当前已生成的序列，预测下一个词的概率分布，选择概率最大的词（Greedy Search），然后将其加入序列，进行下一步预测。
+    </div>
+
+    <div class="viz-area">
+        <!-- Current Sequence -->
+        <div>
+            <div style="text-align:center; margin-bottom:10px; font-weight:bold;">Current Input Sequence</div>
+            <div id="sequence-box" class="sequence-display">
+                <div class="token">&lt;sos&gt;</div>
+            </div>
+        </div>
+
+        <!-- Arrow -->
+        <div style="font-size: 30px; color: #999;">⬇️ Model Prediction (Logits -> Softmax)</div>
+
+        <!-- Probability Chart -->
+        <div class="chart-container">
+            <canvas id="probChart"></canvas>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="next-btn" onclick="nextStep()">Generate Next Token</button>
+        <button id="reset-btn" onclick="reset()" style="background:#e74c3c; display:none;">Reset</button>
+    </div>
+</div>
+
+<script>
+    const vocab = ["I", "love", "AI", "coding", "future", "robot", "<eos>"];
+    const targetSentence = ["I", "love", "AI", "<eos>"];
+    
+    // Mock probabilities for each step
+    const stepProbs = [
+        // Step 1: Predict "I"
+        { "I": 0.8, "love": 0.05, "AI": 0.05, "coding": 0.02, "future": 0.03, "robot": 0.02, "<eos>": 0.03 },
+        // Step 2: Predict "love"
+        { "I": 0.01, "love": 0.9, "AI": 0.05, "coding": 0.01, "future": 0.01, "robot": 0.01, "<eos>": 0.01 },
+        // Step 3: Predict "AI"
+        { "I": 0.01, "love": 0.05, "AI": 0.85, "coding": 0.05, "future": 0.02, "robot": 0.01, "<eos>": 0.01 },
+        // Step 4: Predict "<eos>"
+        { "I": 0.01, "love": 0.01, "AI": 0.05, "coding": 0.01, "future": 0.01, "robot": 0.01, "<eos>": 0.9 }
+    ];
+
+    let currentStep = 0;
+    let chart = null;
+
+    function initChart() {
+        const ctx = document.getElementById('probChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: vocab,
+                datasets: [{
+                    label: 'Probability',
+                    data: vocab.map(() => 0),
+                    backgroundColor: 'rgba(46, 204, 113, 0.6)',
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 1 }
+                },
+                animation: {
+                    duration: 500
+                }
+            }
+        });
+    }
+
+    function updateChart(probs) {
+        const data = vocab.map(word => probs[word] || 0);
+        chart.data.datasets[0].data = data;
+        
+        // Highlight the winner
+        const maxVal = Math.max(...data);
+        const colors = data.map(v => v === maxVal ? 'rgba(46, 204, 113, 0.8)' : 'rgba(200, 200, 200, 0.5)');
+        chart.data.datasets[0].backgroundColor = colors;
+        
+        chart.update();
+    }
+
+    function nextStep() {
+        if (currentStep >= targetSentence.length) return;
+
+        const probs = stepProbs[currentStep];
+        updateChart(probs);
+
+        // Add token to sequence after a short delay to simulate "thinking"
+        const btn = document.getElementById('next-btn');
+        btn.disabled = true;
+        btn.textContent = "Computing...";
+
+        setTimeout(() => {
+            const nextWord = targetSentence[currentStep];
+            addToken(nextWord);
+            
+            currentStep++;
+            
+            if (currentStep >= targetSentence.length) {
+                btn.style.display = 'none';
+                document.getElementById('reset-btn').style.display = 'inline-block';
+            } else {
+                btn.disabled = false;
+                btn.textContent = "Generate Next Token";
+            }
+        }, 600);
+    }
+
+    function addToken(text) {
+        const container = document.getElementById('sequence-box');
+        const token = document.createElement('div');
+        token.className = 'token new';
+        token.textContent = text;
+        container.appendChild(token);
+        
+        // Remove 'new' class after animation
+        setTimeout(() => token.classList.remove('new'), 500);
+    }
+
+    function reset() {
+        currentStep = 0;
+        document.getElementById('sequence-box').innerHTML = '<div class="token">&lt;sos&gt;</div>';
+        document.getElementById('next-btn').style.display = 'inline-block';
+        document.getElementById('next-btn').disabled = false;
+        document.getElementById('next-btn').textContent = "Generate Next Token";
+        document.getElementById('reset-btn').style.display = 'none';
+        
+        // Reset chart
+        chart.data.datasets[0].data = vocab.map(() => 0);
+        chart.update();
+    }
+
+    window.onload = initChart;
+
+</script>
+</body>
+</html>

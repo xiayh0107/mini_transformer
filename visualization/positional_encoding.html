@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - 位置编码可视化</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .formula-box {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: center;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .viz-layout {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-start; /* Prevent stretching */
+        }
+
+        .heatmap-container {
+            flex: 2; /* Give more space to heatmap */
+            min-width: 300px;
+            overflow-x: auto;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-width: 300px;
+            height: 300px; /* Fixed height */
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            position: sticky; /* Stick to top when scrolling */
+            top: 20px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Heatmap styles */
+        .heatmap {
+            display: grid;
+            gap: 1px;
+            background: #ccc;
+            border: 1px solid #999;
+            margin-top: 10px;
+        }
+
+        .row-label {
+            grid-column: 1 / -1;
+            font-size: 0.85em;
+            padding: 2px 5px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cell {
+            width: 100%;
+            height: 25px; /* Slightly taller */
+            background-color: white;
+            transition: opacity 0.2s;
+            position: relative;
+            border: 1px solid transparent; /* Reserve space for border */
+        }
+        
+        .cell:hover {
+            z-index: 10;
+            border-color: #333;
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        /* Column highlight style */
+        .cell.dim-active {
+            opacity: 1;
+            filter: brightness(0.9);
+            border-left: 1px solid rgba(0,0,0,0.3);
+            border-right: 1px solid rgba(0,0,0,0.3);
+        }
+
+        .axis-label {
+            font-size: 0.8em;
+            color: #666;
+            text-align: center;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 100;
+        }
+        .chart-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 5;
+        }
+        
+        .toggle-btn {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .toggle-btn:hover {
+            background: #f9f9f9;
+        }
+        
+        .toggle-btn.active {
+            background: #e3f2fd;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>📍 Positional Encoding (位置编码)</h1>
+    <p>对应代码: <code>src/transformer/positional_encoding.py</code></p>
+
+    <div class="explanation">
+        <strong>为什么需要位置编码？</strong> Transformer 模型并行处理所有单词，没有循环结构（如 RNN），因此它本身无法感知单词的顺序。
+        <br><br>
+        <strong>概念对应关系：</strong>
+        <ul>
+            <li><strong>句子 (Sentence):</strong> 比如 "I love machine learning"</li>
+            <li><strong>序列 (Sequence):</strong> 句子被切分成单词列表 ["I", "love", "machine", "learning"]。列表的长度就是 <strong>序列长度 (Sequence Length)</strong>。</li>
+            <li><strong>位置 (Position):</strong> 每个单词在列表中的索引。 "I"是0, "love"是1...</li>
+            <li><strong>维度 (Dimension):</strong> 计算机无法直接理解单词，每个单词都被转换成一串数字（向量）。这串数字的个数就是 <strong>维度 (d_model)</strong>。</li>
+        </ul>
+        <p><strong>位置编码矩阵</strong> 的每一行，就是加到对应单词向量上的“位置指纹”。</p>
+    </div>
+
+    <div class="formula-box">
+        $$ PE_{(pos, 2i)} = \sin(pos / 10000^{2i/d_{model}}) $$
+        $$ PE_{(pos, 2i+1)} = \cos(pos / 10000^{2i/d_{model}}) $$
+    </div>
+
+    <div class="controls">
+        <div class="control-group" style="flex: 2; min-width: 300px;">
+            <label>输入句子 (Input Sentence):</label>
+            <input type="text" id="input-sentence" value="I love machine learning very much" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div class="control-group">
+            <label>嵌入维度 (d_model): <span id="val-dim">32</span></label>
+            <input type="range" id="slider-dim" min="4" max="128" value="32" step="4">
+        </div>
+    </div>
+
+    <div class="viz-layout">
+        <div class="heatmap-container">
+            <h3>PE 矩阵热力图</h3>
+            <p><small>行: 位置 (Position), 列: 维度 (Dimension)</small></p>
+            <div id="heatmap" class="heatmap"></div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-controls">
+                <button id="btn-full-wave" class="toggle-btn" title="显示完整的正弦/余弦周期，而不仅仅是当前句子的部分">
+                    <span>🔍 显示完整周期</span>
+                </button>
+            </div>
+            <h3>维度波形图</h3>
+            <p><small>悬停在热力图的某一列上，查看该维度的正弦/余弦波形。</small></p>
+            <canvas id="wave-chart"></canvas>
+            <div id="wave-explanation" style="margin-top: 10px; font-size: 0.85em; color: #666; background: #f9f9f9; padding: 8px; border-radius: 4px; display: none;">
+                <strong>为什么看起来是直的？</strong><br>
+                在高维度（索引较大）时，波长变得非常长（可达 10000 * 2π）。<br>
+                对于短句子，我们只采样了波形的极小一段开头。<br>
+                因为 Cos(0)=1，所以奇数维度看起来恒为 1 (红色)。<br>
+                因为 Sin(0)=0，所以偶数维度看起来恒为 0 (白色)。<br>
+                点击右上角“显示完整周期”可验证这一点。
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+    const inputSentence = document.getElementById('input-sentence');
+    const sliderDim = document.getElementById('slider-dim');
+    const valDim = document.getElementById('val-dim');
+    const heatmap = document.getElementById('heatmap');
+    const canvas = document.getElementById('wave-chart');
+    const ctx = canvas.getContext('2d');
+
+    let words = [];
+    let dModel = parseInt(sliderDim.value);
+
+    function updateValues() {
+        const text = inputSentence.value.trim();
+        words = text ? text.split(/\s+/) : [];
+        dModel = parseInt(sliderDim.value);
+        valDim.textContent = dModel;
+        render();
+    }
+
+    inputSentence.oninput = updateValues;
+    sliderDim.oninput = updateValues;
+
+    function getPE(pos, i, d) {
+        const divTerm = Math.exp(Math.floor(i / 2) * 2 * (-Math.log(10000.0) / d));
+        if (i % 2 === 0) {
+            return Math.sin(pos * divTerm);
+        } else {
+            return Math.cos(pos * divTerm);
+        }
+    }
+
+    function getColor(val) {
+        // val is -1 to 1
+        // Map -1 -> Blue, 0 -> White, 1 -> Red
+        const r = val > 0 ? 255 : 255 + val * 255;
+        const g = val > 0 ? 255 - val * 255 : 255 + val * 255;
+        const b = val > 0 ? 255 - val * 255 : 255;
+        return `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
+    }
+
+    const btnFullWave = document.getElementById('btn-full-wave');
+    const waveExplanation = document.getElementById('wave-explanation');
+    let showFullWave = false;
+
+    btnFullWave.onclick = () => {
+        showFullWave = !showFullWave;
+        btnFullWave.classList.toggle('active');
+        btnFullWave.innerHTML = showFullWave ? '<span>🔙 仅显示当前句子</span>' : '<span>🔍 显示完整周期</span>';
+        drawChart(lastDimIndex, lastActivePos);
+    };
+
+    let lastDimIndex = 0;
+    let lastActivePos = -1;
+
+    function drawChart(dimIndex, activePos = -1) {
+        lastDimIndex = dimIndex;
+        lastActivePos = activePos;
+        
+        // Show explanation for high dimensions if not showing full wave
+        if (!showFullWave && dimIndex > dModel / 2) {
+            waveExplanation.style.display = 'block';
+        } else {
+            waveExplanation.style.display = 'none';
+        }
+
+        // Resize canvas
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width - 20;
+        canvas.height = rect.height - 80; // Adjust for explanation space
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw axis
+        ctx.beginPath();
+        ctx.strokeStyle = '#ccc';
+        ctx.moveTo(0, canvas.height / 2);
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+
+        // Draw wave
+        ctx.beginPath();
+        ctx.strokeStyle = '#4a90e2';
+        ctx.lineWidth = 2;
+
+        // Determine range
+        // If showFullWave, we want to show at least one full period (2*PI / freq)
+        // freq = 1 / (10000^(2i/d))
+        // period = 2*PI * 10000^(2i/d)
+        
+        let plotMaxLen;
+        if (showFullWave) {
+            const divTerm = Math.exp(Math.floor(dimIndex / 2) * 2 * (-Math.log(10000.0) / dModel));
+            // period = 2*PI / divTerm
+            // But divTerm can be very small, period very large.
+            // Let's limit to a reasonable number of points to draw, but scale x-axis
+            // Actually, we just need to plot from pos=0 to pos=period
+            const period = 2 * Math.PI / divTerm;
+            plotMaxLen = Math.max(period, words.length * 2); // Show at least one period
+            // Cap at some reasonable limit to prevent infinite drawing for very high dims
+            plotMaxLen = Math.min(plotMaxLen, 100000); 
+        } else {
+            plotMaxLen = Math.max(words.length, 50);
+        }
+
+        const stepX = canvas.width / (showFullWave ? 100 : (plotMaxLen - 1)); 
+        // If full wave, we sample 100 points across the period
+        
+        const numPoints = showFullWave ? 200 : plotMaxLen;
+        const xScale = canvas.width / (numPoints - 1);
+
+        for(let i=0; i<numPoints; i++) {
+            // If full wave, pos goes from 0 to plotMaxLen
+            const pos = showFullWave ? (i / (numPoints-1)) * plotMaxLen : i;
+            
+            const val = getPE(pos, dimIndex, dModel);
+            
+            const x = i * xScale;
+            const y = (1 - val) * (canvas.height / 2); 
+            
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Highlight current word position on chart
+        if (activePos !== -1) {
+            // Calculate x for activePos
+            let x;
+            if (showFullWave) {
+                // pos maps to x: 0 -> 0, plotMaxLen -> width
+                x = (activePos / plotMaxLen) * canvas.width;
+            } else {
+                x = activePos * (canvas.width / (plotMaxLen - 1));
+            }
+            
+            // Only draw if within view
+            if (x >= 0 && x <= canvas.width) {
+                const val = getPE(activePos, dimIndex, dModel);
+                const y = (1 - val) * (canvas.height / 2);
+
+                // Draw vertical line
+                ctx.beginPath();
+                ctx.strokeStyle = '#ff0000';
+                ctx.setLineDash([5, 5]);
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw point
+                ctx.beginPath();
+                ctx.fillStyle = '#ff0000';
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw label
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 12px Arial';
+                const word = words[activePos] || '';
+                // Adjust label position if too close to edge
+                const textX = x > canvas.width - 50 ? x - 50 : x + 8;
+                ctx.fillText(`${word} (Pos ${activePos})`, textX, y - 8);
+            }
+        }
+        
+        // Title
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        let title = `Dimension ${dimIndex} (${dimIndex % 2 === 0 ? 'Sin' : 'Cos'})`;
+        if (showFullWave) title += " - [完整周期视图]";
+        ctx.fillText(title, 10, 20);
+    }
+
+    function render() {
+        heatmap.innerHTML = '';
+        // Use CSS Grid for layout: Label column + dModel columns
+        // But to keep it simple with current structure, let's just use rows
+        heatmap.style.display = 'flex';
+        heatmap.style.flexDirection = 'column';
+        heatmap.style.gap = '2px';
+        heatmap.style.background = 'transparent';
+        heatmap.style.border = 'none';
+        
+        words.forEach((word, pos) => {
+            // Row Container
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.gap = '1px';
+            
+            // Label
+            const label = document.createElement('div');
+            label.style.width = '80px';
+            label.style.fontSize = '0.9em';
+            label.style.textAlign = 'right';
+            label.style.paddingRight = '10px';
+            label.innerHTML = `<strong>${word}</strong><br><small>Pos ${pos}</small>`;
+            row.appendChild(label);
+            
+            // Cells
+            for(let i=0; i<dModel; i++) {
+                const val = getPE(pos, i, dModel);
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.flex = '1';
+                cell.style.backgroundColor = getColor(val);
+                cell.dataset.pos = pos;
+                cell.dataset.dim = i;
+                
+                cell.onmouseover = (e) => {
+                    showTooltip(e, `Word: "${word}"<br>Pos: ${pos}<br>Dim: ${i}<br>Val: ${val.toFixed(3)}`);
+                    drawChart(i, pos); // Pass pos to highlight
+                    highlightColumn(i);
+                };
+                
+                cell.onmouseout = () => {
+                    hideTooltip();
+                    clearHighlight();
+                    drawChart(0); // Reset chart
+                };
+
+                row.appendChild(cell);
+            }
+            
+            heatmap.appendChild(row);
+        });
+        
+        // Default chart
+        drawChart(0);
+    }
+
+    function highlightColumn(colIndex) {
+        const cells = document.querySelectorAll(`.cell[data-dim="${colIndex}"]`);
+        cells.forEach(cell => cell.classList.add('dim-active'));
+    }
+
+    function clearHighlight() {
+        const cells = document.querySelectorAll('.cell.dim-active');
+        cells.forEach(cell => cell.classList.remove('dim-active'));
+    }
+
+    function render() {
+        heatmap.innerHTML = '';
+        // Use CSS Grid for layout: Label column + dModel columns
+        // But to keep it simple with current structure, let's just use rows
+        heatmap.style.display = 'flex';
+        heatmap.style.flexDirection = 'column';
+        heatmap.style.gap = '2px';
+        heatmap.style.background = 'transparent';
+        heatmap.style.border = 'none';
+        
+        words.forEach((word, pos) => {
+            // Row Container
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.gap = '1px';
+            
+            // Label
+            const label = document.createElement('div');
+            label.style.width = '80px';
+            label.style.fontSize = '0.9em';
+            label.style.textAlign = 'right';
+            label.style.paddingRight = '10px';
+            label.innerHTML = `<strong>${word}</strong><br><small>Pos ${pos}</small>`;
+            row.appendChild(label);
+            
+            // Cells
+            for(let i=0; i<dModel; i++) {
+                const val = getPE(pos, i, dModel);
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.flex = '1';
+                cell.style.backgroundColor = getColor(val);
+                cell.dataset.pos = pos;
+                cell.dataset.dim = i;
+                
+                cell.onmouseover = (e) => {
+                    showTooltip(e, `Word: "${word}"<br>Pos: ${pos}<br>Dim: ${i}<br>Val: ${val.toFixed(3)}`);
+                    drawChart(i);
+                };
+                
+                cell.onmouseout = () => {
+                    hideTooltip();
+                };
+
+                row.appendChild(cell);
+            }
+            
+            heatmap.appendChild(row);
+        });
+        
+        // Default chart
+        drawChart(0);
+    }
+
+    function showTooltip(e, text) {
+        const tooltip = document.getElementById('tooltip');
+        tooltip.innerHTML = text;
+        tooltip.style.left = e.pageX + 10 + 'px';
+        tooltip.style.top = e.pageY + 10 + 'px';
+        tooltip.style.opacity = 1;
+    }
+
+    function hideTooltip() {
+        document.getElementById('tooltip').style.opacity = 0;
+    }
+
+    // Initial render
+    updateValues();
+    
+    // Handle window resize for canvas
+    window.onresize = () => drawChart(0);
+
+</script>
+</body>
+</html>

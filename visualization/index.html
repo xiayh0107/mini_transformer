@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - 架构全景图</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: white;
+            padding: 30px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(#e1e1e1 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow: auto;
+            padding: 20px;
+        }
+
+        h1 { color: #2c3e50; margin-top: 0; }
+        p { line-height: 1.6; color: #555; }
+
+        .info-card {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.3s;
+        }
+
+        .info-card.active { display: block; }
+
+        .btn-enter {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .btn-enter:hover { background: #357abd; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SVG Styles */
+        svg {
+            max-height: 90vh;
+            width: auto;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        .block-group {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .block-rect {
+            fill: white;
+            stroke: #333;
+            stroke-width: 2;
+            transition: all 0.3s;
+        }
+
+        .block-group:hover .block-rect {
+            fill: #e3f2fd;
+            stroke: var(--primary-color);
+            stroke-width: 3;
+        }
+        
+        .block-group.disabled {
+            cursor: default;
+            opacity: 0.6;
+        }
+        
+        .block-group.disabled:hover .block-rect {
+            fill: #f0f0f0;
+            stroke: #999;
+        }
+
+        .block-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            fill: #333;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .connection {
+            stroke: #666;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        
+        .container-rect {
+            fill: none;
+            stroke: #999;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+            rx: 10;
+        }
+        
+        .label-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            fill: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h1>🗺️ Transformer 架构全景图</h1>
+        <p>欢迎来到 Mini Transformer 的交互式学习地图。这里展示了 Transformer 模型（Encoder 部分）的完整数据流向。</p>
+        <p><strong>如何使用：</strong><br>将鼠标悬停在右侧架构图的各个模块上，查看功能简介。点击高亮模块即可进入对应的深度可视化页面。</p>
+        
+        <div id="default-info" class="info-card active">
+            <h3>👋 准备好了吗？</h3>
+            <p>请探索右侧的模块。我们目前已经实现了以下核心组件的可视化：</p>
+            <ul>
+                <li>Positional Encoding</li>
+                <li>Multi-Head Attention</li>
+                <li>Layer Normalization</li>
+            </ul>
+        </div>
+
+        <!-- Dynamic Info Cards -->
+        <div id="info-pe" class="info-card">
+            <h3>📍 Positional Encoding</h3>
+            <p>由于 Transformer 并行处理数据，它需要额外的位置信息来理解单词顺序。</p>
+            <a href="positional_encoding.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div id="info-attn" class="info-card">
+            <h3>🔍 Multi-Head Attention</h3>
+            <p>模型的“灵魂”。它允许模型在处理当前单词时，关注句子中的其他相关单词。</p>
+            <a href="attention.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div id="info-norm" class="info-card">
+            <h3>⚖️ Layer Normalization</h3>
+            <p>稳定每一层的输出分布，防止梯度消失或爆炸，是训练深层网络的关键。</p>
+            <a href="layer_norm.html" class="btn-enter">进入可视化 →</a>
+        </div>
+        
+        <div id="info-ffn" class="info-card">
+            <h3>⚡ Feed Forward</h3>
+            <p>前馈神经网络，对每个位置的向量独立进行非线性变换，增强模型的表达能力。</p>
+            <a href="feed_forward.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div id="info-masked-attn" class="info-card">
+            <h3>🎭 Masked Attention</h3>
+            <p>Decoder 专有组件。在生成文本时，防止模型“偷看”到未来的单词。</p>
+            <a href="masked_attention.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div id="info-cross-attn" class="info-card">
+            <h3>🔀 Cross Attention</h3>
+            <p>连接 Encoder 和 Decoder。让 Decoder 在生成时能够“关注”源句子的相关部分。</p>
+            <a href="cross_attention.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div id="info-generation" class="info-card">
+            <h3>🚀 Generation</h3>
+            <p>最终的输出阶段。模型逐个预测下一个单词，直到生成结束符。</p>
+            <a href="generation.html" class="btn-enter">进入可视化 →</a>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <label style="font-weight: bold; display: block; margin-bottom: 10px;">架构视图切换:</label>
+            <button id="view-toggle" onclick="toggleView()" style="width: 100%; padding: 10px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Switch to Decoder
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <svg viewBox="0 0 400 600" width="400" height="600">
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                </marker>
+            </defs>
+
+            <!-- Input Flow -->
+            <text x="200" y="580" class="block-text">Inputs</text>
+            <line x1="200" y1="570" x2="200" y2="540" class="connection" />
+
+            <!-- Positional Encoding Block -->
+            <g class="block-group" onclick="window.location.href='positional_encoding.html'" onmouseover="showInfo('info-pe')" onmouseout="showInfo('default-info')">
+                <circle cx="200" cy="520" r="20" class="block-rect" />
+                <text x="200" y="525" class="block-text" style="font-size: 20px;">+</text>
+                <text x="240" y="525" class="label-text" style="text-anchor: start;">Positional Encoding</text>
+            </g>
+            
+            <line x1="200" y1="500" x2="200" y2="470" class="connection" />
+
+            <!-- Encoder Layer Container -->
+            <rect id="layer-container" x="50" y="100" width="300" height="350" class="container-rect" />
+            <text id="layer-label" x="60" y="120" class="label-text">Encoder Layer x N</text>
+
+            <!-- Multi-Head Attention -->
+            <g id="attn-block" class="block-group" onclick="window.location.href='attention.html'" onmouseover="showInfo('info-attn')" onmouseout="showInfo('default-info')">
+                <rect id="attn-rect" x="100" y="380" width="200" height="60" rx="5" class="block-rect" style="fill: #ffe0b2;" />
+                <text id="attn-text" x="200" y="415" class="block-text">Multi-Head Attention</text>
+            </g>
+
+            <line x1="200" y1="380" x2="200" y2="350" class="connection" />
+
+            <!-- Add & Norm 1 -->
+            <g class="block-group" onclick="window.location.href='layer_norm.html'" onmouseover="showInfo('info-norm')" onmouseout="showInfo('default-info')">
+                <rect x="100" y="310" width="200" height="40" rx="5" class="block-rect" style="fill: #fff9c4;" />
+                <text x="200" y="335" class="block-text">Add & Norm</text>
+            </g>
+
+            <line x1="200" y1="310" x2="200" y2="280" class="connection" />
+
+            <!-- Feed Forward -->
+            <g class="block-group" onclick="window.location.href='feed_forward.html'" onmouseover="showInfo('info-ffn')" onmouseout="showInfo('default-info')">
+                <rect x="100" y="220" width="200" height="60" rx="5" class="block-rect" style="fill: #bbdefb;" />
+                <text x="200" y="255" class="block-text">Feed Forward</text>
+            </g>
+
+            <line x1="200" y1="220" x2="200" y2="190" class="connection" />
+
+            <!-- Add & Norm 2 -->
+            <g class="block-group" onclick="window.location.href='layer_norm.html'" onmouseover="showInfo('info-norm')" onmouseout="showInfo('default-info')">
+                <rect x="100" y="150" width="200" height="40" rx="5" class="block-rect" style="fill: #fff9c4;" />
+                <text x="200" y="175" class="block-text">Add & Norm</text>
+            </g>
+
+            <line x1="200" y1="150" x2="200" y2="80" class="connection" />
+            
+            <!-- Output -->
+            <g class="block-group" onclick="window.location.href='generation.html'" onmouseover="showInfo('info-generation')" onmouseout="showInfo('default-info')">
+                <text x="200" y="70" class="block-text" style="cursor: pointer; text-decoration: underline;">Output Generation</text>
+            </g>
+
+            <!-- Residual Connections (Simplified) -->
+            <!-- Curve around Attention -->
+            <path d="M 200 470 Q 50 470 50 415 L 50 330 Q 50 330 100 330" fill="none" stroke="#999" stroke-dasharray="3,3" marker-end="url(#arrowhead)" />
+            
+            <!-- Curve around FFN -->
+            <path d="M 200 290 Q 50 290 50 250 L 50 170 Q 50 170 100 170" fill="none" stroke="#999" stroke-dasharray="3,3" marker-end="url(#arrowhead)" />
+
+        </svg>
+    </div>
+
+    <script>
+        function showInfo(id) {
+            // Hide all info cards
+            document.querySelectorAll('.info-card').forEach(el => el.classList.remove('active'));
+            // Show specific one
+            const el = document.getElementById(id);
+            if(el) el.classList.add('active');
+        }
+
+        let isDecoder = false;
+        function toggleView() {
+            isDecoder = !isDecoder;
+            const btn = document.getElementById('view-toggle');
+            const layerLabel = document.getElementById('layer-label');
+            const attnBlock = document.getElementById('attn-block');
+            const attnRect = document.getElementById('attn-rect');
+            const attnText = document.getElementById('attn-text');
+
+            if (isDecoder) {
+                // Switch to Decoder Mode
+                btn.textContent = "Switch to Encoder";
+                btn.style.background = "#e74c3c"; // Red
+                layerLabel.textContent = "Decoder Layer x N";
+                
+                // Update Attention Block
+                attnRect.style.fill = "#ffcdd2"; // Light Red
+                attnText.textContent = "Masked Self-Attention";
+                
+                // Update Interactions
+                attnBlock.onclick = () => window.location.href = 'masked_attention.html';
+                attnBlock.onmouseover = () => showInfo('info-masked-attn');
+                
+            } else {
+                // Switch to Encoder Mode
+                btn.textContent = "Switch to Decoder";
+                btn.style.background = "#6c757d"; // Grey
+                layerLabel.textContent = "Encoder Layer x N";
+                
+                // Update Attention Block
+                attnRect.style.fill = "#ffe0b2"; // Light Orange
+                attnText.textContent = "Multi-Head Attention";
+                
+                // Update Interactions
+                attnBlock.onclick = () => window.location.href = 'attention.html';
+                attnBlock.onmouseover = () => showInfo('info-attn');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - Layer Normalization 可视化</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .formula-box {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.3em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .viz-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .vector-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .vector-label {
+            width: 120px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .vector-values {
+            display: flex;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .value-box {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9em;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .value-box.input {
+            cursor: ns-resize; /* Indicate draggable */
+            background: #fff;
+        }
+        
+        .value-box.input:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+        }
+
+        .stats-box {
+            width: 150px;
+            font-size: 0.9em;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .chart-container {
+            height: 200px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+        
+        .param-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+        }
+        
+        .param-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚖️ Layer Normalization (层归一化)</h1>
+    <p>对应代码: <code>src/transformer/encoder.py</code> 中的 <code>nn.LayerNorm</code></p>
+
+    <div class="explanation">
+        <strong>为什么需要 LayerNorm？</strong> 在深度神经网络中，每一层的输入分布可能会发生变化（Internal Covariate Shift），导致训练困难。LayerNorm 通过将每个样本的特征向量归一化为均值为 0、方差为 1 的分布，来稳定训练过程。
+    </div>
+
+    <div class="formula-box">
+        $$ y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta $$
+        <small>$\mu$: 均值, $\sigma^2$: 方差, $\gamma$: 缩放参数 (Learnable), $\beta$: 平移参数 (Learnable)</small>
+    </div>
+
+    <div class="viz-area">
+        <!-- Input Vector -->
+        <div class="vector-container">
+            <div class="vector-label">
+                输入向量 $x$<br>
+                <small style="font-weight:normal; color:#666;">(拖动数值改变)</small>
+            </div>
+            <div class="vector-values" id="input-vector">
+                <!-- Generated by JS -->
+            </div>
+            <div class="stats-box" id="input-stats">
+                $\mu = 0.00$<br>
+                $\sigma^2 = 0.00$
+            </div>
+        </div>
+
+        <!-- Normalized Vector -->
+        <div class="vector-container">
+            <div class="vector-label">
+                归一化 $\hat{x}$<br>
+                <small style="font-weight:normal; color:#666;">(Mean=0, Var=1)</small>
+            </div>
+            <div class="vector-values" id="norm-vector">
+                <!-- Generated by JS -->
+            </div>
+            <div class="stats-box" id="norm-stats">
+                $\mu = 0.00$<br>
+                $\sigma^2 = 1.00$
+            </div>
+        </div>
+
+        <!-- Output Vector -->
+        <div class="vector-container" style="border-color: var(--secondary-color); background: #fff9e6;">
+            <div class="vector-label">
+                输出向量 $y$<br>
+                <small style="font-weight:normal; color:#666;">(Scale & Shift)</small>
+            </div>
+            <div class="vector-values" id="output-vector">
+                <!-- Generated by JS -->
+            </div>
+            <div class="stats-box">
+                应用参数:<br>
+                $\gamma, \beta$
+            </div>
+        </div>
+        
+        <div class="param-controls">
+            <div class="param-group">
+                <label>$\gamma$ (Gamma / Scale): <span id="val-gamma">1.0</span></label>
+                <input type="range" id="slider-gamma" min="0.1" max="3.0" step="0.1" value="1.0">
+            </div>
+            <div class="param-group">
+                <label>$\beta$ (Beta / Shift): <span id="val-beta">0.0</span></label>
+                <input type="range" id="slider-beta" min="-2.0" max="2.0" step="0.1" value="0.0">
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="dist-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dModel = 8;
+    // Initial random values
+    let inputData = Array(dModel).fill(0).map(() => Math.floor(Math.random() * 10) - 2);
+    let gamma = 1.0;
+    let beta = 0.0;
+    const epsilon = 1e-5;
+
+    const inputContainer = document.getElementById('input-vector');
+    const normContainer = document.getElementById('norm-vector');
+    const outputContainer = document.getElementById('output-vector');
+    
+    const sliderGamma = document.getElementById('slider-gamma');
+    const sliderBeta = document.getElementById('slider-beta');
+    const valGamma = document.getElementById('val-gamma');
+    const valBeta = document.getElementById('val-beta');
+
+    let chart;
+
+    function init() {
+        // Create Input Inputs
+        inputData.forEach((val, i) => {
+            const div = document.createElement('div');
+            div.className = 'value-box input';
+            div.textContent = val.toFixed(1);
+            div.dataset.index = i;
+            
+            // Simple drag interaction
+            let startY;
+            let startVal;
+            
+            div.onmousedown = (e) => {
+                e.preventDefault(); // Prevent text selection
+                startY = e.clientY;
+                startVal = inputData[i];
+                
+                const onMove = (moveEvent) => {
+                    // Use requestAnimationFrame to prevent UI blocking
+                    requestAnimationFrame(() => {
+                        const diff = startY - moveEvent.clientY; // Up is positive
+                        let newVal = startVal + diff / 10;
+                        newVal = Math.max(-10, Math.min(10, newVal)); // Clamp
+                        
+                        // Only update if value changed significantly
+                        if (Math.abs(newVal - inputData[i]) > 0.01) {
+                            inputData[i] = newVal;
+                            div.textContent = newVal.toFixed(1);
+                            update();
+                        }
+                    });
+                };
+                
+                const onUp = () => {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                };
+                
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            };
+            
+            inputContainer.appendChild(div);
+        });
+
+        // Create Norm Placeholders
+        for(let i=0; i<dModel; i++) {
+            const div = document.createElement('div');
+            div.className = 'value-box';
+            div.style.background = '#f0f0f0';
+            normContainer.appendChild(div);
+        }
+
+        // Create Output Placeholders
+        for(let i=0; i<dModel; i++) {
+            const div = document.createElement('div');
+            div.className = 'value-box';
+            div.style.background = '#fff9c4';
+            outputContainer.appendChild(div);
+        }
+
+        // Init Chart
+        const ctx = document.getElementById('dist-chart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: dModel}, (_, i) => `Dim ${i}`),
+                datasets: [
+                    {
+                        label: 'Input (x)',
+                        data: [],
+                        borderColor: '#999',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Output (y)',
+                        data: [],
+                        borderColor: '#4a90e2',
+                        backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: -5, max: 5 }
+                }
+            }
+        });
+
+        update();
+    }
+
+    sliderGamma.oninput = () => {
+        gamma = parseFloat(sliderGamma.value);
+        valGamma.textContent = gamma.toFixed(1);
+        update();
+    };
+
+    sliderBeta.oninput = () => {
+        beta = parseFloat(sliderBeta.value);
+        valBeta.textContent = beta.toFixed(1);
+        update();
+    };
+
+    function getColor(val) {
+        // Map value to color intensity
+        // 0 -> White, Positive -> Blue, Negative -> Red
+        const maxVal = 3;
+        const intensity = Math.min(Math.abs(val) / maxVal, 1);
+        if (val > 0) {
+            return `rgba(74, 144, 226, ${intensity * 0.5})`;
+        } else {
+            return `rgba(245, 166, 35, ${intensity * 0.5})`;
+        }
+    }
+
+    function update() {
+        // 1. Calculate Mean & Variance
+        const mean = inputData.reduce((a, b) => a + b, 0) / dModel;
+        const variance = inputData.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / dModel;
+        const stdDev = Math.sqrt(variance + epsilon);
+
+        document.getElementById('input-stats').innerHTML = `$\\mu = ${mean.toFixed(2)}$<br>$\\sigma^2 = ${variance.toFixed(2)}$`;
+
+        // 2. Normalize
+        const normData = inputData.map(x => (x - mean) / stdDev);
+        
+        // Update Norm UI
+        const normBoxes = normContainer.children;
+        const normMean = normData.reduce((a, b) => a + b, 0) / dModel; // Should be ~0
+        const normVar = normData.reduce((a, b) => a + Math.pow(b - normMean, 2), 0) / dModel; // Should be ~1
+        
+        document.getElementById('norm-stats').innerHTML = `$\\mu \\approx ${Math.abs(normMean).toFixed(2)}$<br>$\\sigma^2 \\approx ${normVar.toFixed(2)}$`;
+
+        for(let i=0; i<dModel; i++) {
+            normBoxes[i].textContent = normData[i].toFixed(2);
+            normBoxes[i].style.backgroundColor = getColor(normData[i]);
+        }
+
+        // 3. Scale & Shift
+        const outputData = normData.map(x => x * gamma + beta);
+        
+        // Update Output UI
+        const outBoxes = outputContainer.children;
+        for(let i=0; i<dModel; i++) {
+            outBoxes[i].textContent = outputData[i].toFixed(2);
+            outBoxes[i].style.backgroundColor = getColor(outputData[i]);
+        }
+
+        // Update Chart
+        chart.data.datasets[0].data = inputData;
+        chart.data.datasets[1].data = outputData;
+        chart.update();
+        
+        // Re-render MathJax
+        if(window.MathJax && window.MathJax.typesetPromise) {
+            const statsNodes = [
+                document.getElementById('input-stats'),
+                document.getElementById('norm-stats')
+            ];
+            MathJax.typesetPromise(statsNodes).catch((err) => console.log('MathJax error:', err));
+        }
+    }
+
+    // Wait for MathJax to load before first update
+    window.addEventListener('load', () => {
+        init();
+    });
+
+</script>
+</body>
+</html>

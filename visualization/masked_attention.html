@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - Masked Attention 可视化</title>
+    <style>
+        :root {
+            --primary-color: #e74c3c; /* Red for Decoder/Masking focus */
+            --secondary-color: #f5a623;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #fdedec; /* Light red bg */
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .viz-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .matrix-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .matrix {
+            display: grid;
+            gap: 2px;
+            padding: 5px;
+            background: #eee;
+            border-radius: 4px;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cell.masked {
+            background-color: #333;
+            color: #fff;
+            font-family: monospace;
+        }
+
+        .cell.zero {
+            background-color: #f8f9fa;
+            color: #ccc;
+        }
+
+        .controls {
+            margin: 30px 0;
+            text-align: center;
+            padding: 20px;
+            background: #f1f1f1;
+            border-radius: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            vertical-align: middle;
+        }
+
+        .toggle-switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .arrow {
+            font-size: 30px;
+            color: #999;
+            align-self: center;
+        }
+
+        .row-label, .col-label {
+            font-size: 0.8em;
+            color: #666;
+            position: absolute;
+        }
+        
+        .row-label { left: -60px; width: 50px; text-align: right; }
+        .col-label { top: -25px; width: 100%; text-align: center; }
+
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎭 Masked Attention (掩码注意力)</h1>
+    <p>对应代码: <code>src/transformer/attention.py</code> 中的 <code>scores.masked_fill</code></p>
+
+    <div class="explanation">
+        <strong>为什么需要 Mask？</strong> 在 Decoder（生成器）中，模型是逐个词生成的。当模型在预测第 $t$ 个词时，它不应该“偷看”到第 $t+1$ 个及之后的词。
+        <br>
+        我们通过将分数矩阵的上三角区域设置为 $-\infty$ 来实现这一点。这样在 Softmax 之后，这些位置的概率就会变成 $0$。
+    </div>
+
+    <div class="controls">
+        <label style="font-size: 1.2em; margin-right: 15px;">启用 Mask (Enable Masking):</label>
+        <label class="toggle-switch">
+            <input type="checkbox" id="mask-toggle" checked>
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="viz-area">
+        <!-- Raw Scores -->
+        <div class="matrix-container">
+            <div class="matrix-title">1. 原始分数 (Scores)</div>
+            <div class="matrix-title" style="font-size: 0.9em; font-weight: normal;">$Q \cdot K^T$</div>
+            <div id="scores-matrix" class="matrix" style="grid-template-columns: repeat(4, 1fr);"></div>
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <!-- Masked Scores -->
+        <div class="matrix-container">
+            <div class="matrix-title">2. 掩码处理 (Masked)</div>
+            <div class="matrix-title" style="font-size: 0.9em; font-weight: normal;">Fill $-\infty$</div>
+            <div id="masked-matrix" class="matrix" style="grid-template-columns: repeat(4, 1fr);"></div>
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <!-- Softmax -->
+        <div class="matrix-container">
+            <div class="matrix-title">3. 概率分布 (Softmax)</div>
+            <div class="matrix-title" style="font-size: 0.9em; font-weight: normal;">Attention Weights</div>
+            <div id="softmax-matrix" class="matrix" style="grid-template-columns: repeat(4, 1fr);"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const seqLen = 4;
+    const words = ["I", "love", "AI", "<eos>"];
+    
+    // Generate random scores
+    const scores = [];
+    for(let i=0; i<seqLen; i++) {
+        const row = [];
+        for(let j=0; j<seqLen; j++) {
+            row.push((Math.random() * 4 - 1).toFixed(1)); // -1 to 3
+        }
+        scores.push(row);
+    }
+
+    const toggle = document.getElementById('mask-toggle');
+    
+    function render() {
+        const isMasked = toggle.checked;
+        
+        renderMatrix('scores-matrix', scores, false);
+        
+        // Calculate Masked Scores
+        const maskedScores = JSON.parse(JSON.stringify(scores));
+        if (isMasked) {
+            for(let i=0; i<seqLen; i++) {
+                for(let j=0; j<seqLen; j++) {
+                    if (j > i) {
+                        maskedScores[i][j] = "-inf";
+                    }
+                }
+            }
+        }
+        renderMatrix('masked-matrix', maskedScores, true);
+        
+        // Calculate Softmax
+        const softmaxData = maskedScores.map(row => {
+            // Handle -inf
+            const safeRow = row.map(val => val === "-inf" ? -1e9 : parseFloat(val));
+            const maxVal = Math.max(...safeRow);
+            const exps = safeRow.map(val => Math.exp(val - maxVal)); // Stable softmax
+            const sum = exps.reduce((a,b) => a+b, 0);
+            return exps.map(val => val / sum);
+        });
+        
+        renderMatrix('softmax-matrix', softmaxData, false, true);
+    }
+
+    function renderMatrix(id, data, isMaskViz, isSoftmax = false) {
+        const container = document.getElementById(id);
+        container.innerHTML = '';
+        
+        data.forEach((row, i) => {
+            row.forEach((val, j) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                // Labels
+                if (j === 0) {
+                    const label = document.createElement('div');
+                    label.className = 'row-label';
+                    label.textContent = words[i];
+                    cell.appendChild(label);
+                }
+                if (i === 0) {
+                    const label = document.createElement('div');
+                    label.className = 'col-label';
+                    label.textContent = words[j];
+                    cell.appendChild(label);
+                }
+
+                if (val === "-inf") {
+                    cell.textContent = "-∞";
+                    cell.classList.add('masked');
+                } else {
+                    if (isSoftmax) {
+                        cell.textContent = val.toFixed(2);
+                        const intensity = val;
+                        if (val < 0.01) {
+                            cell.classList.add('zero');
+                            cell.style.color = '#ccc';
+                        } else {
+                            cell.style.backgroundColor = `rgba(231, 76, 60, ${intensity})`; // Red scale
+                            cell.style.color = intensity > 0.5 ? 'white' : 'black';
+                        }
+                    } else {
+                        cell.textContent = val;
+                    }
+                }
+                
+                container.appendChild(cell);
+            });
+        });
+    }
+
+    toggle.onchange = render;
+    
+    // Initial render
+    render();
+
+</script>
+</body>
+</html>

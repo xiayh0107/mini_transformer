@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - Feed Forward Network 可视化</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --danger-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .formula-box {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.3em;
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .network-viz {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .layer-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .layer-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .neuron {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .neuron.input {
+            cursor: ns-resize;
+            border-color: var(--primary-color);
+        }
+        
+        .neuron.input:hover {
+            background-color: #e3f2fd;
+            transform: scale(1.1);
+        }
+
+        .neuron.hidden {
+            border-color: var(--secondary-color);
+        }
+
+        .neuron.dead {
+            background-color: #f0f0f0;
+            color: #999;
+            border-color: #ddd;
+        }
+        
+        .neuron.active {
+            background-color: #fff3cd;
+            font-weight: bold;
+        }
+
+        .neuron.output {
+            border-color: #2ecc71;
+        }
+
+        /* Connections SVG */
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .connection-line {
+            stroke: #ddd;
+            stroke-width: 1;
+            transition: stroke 0.3s, stroke-width 0.3s;
+        }
+        
+        .connection-line.active {
+            stroke: var(--secondary-color);
+            stroke-width: 2;
+            opacity: 0.6;
+        }
+
+        .controls {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        .relu-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 5px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .neuron.dead .relu-badge {
+            display: block;
+        }
+
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚡ Feed Forward Network (前馈网络)</h1>
+    <p>对应代码: <code>src/transformer/encoder.py</code> 中的 <code>self.ffn</code></p>
+
+    <div class="explanation">
+        <strong>作用：</strong> FFN 对序列中的每个位置独立进行处理。它将数据投影到更高维空间（通常是 4倍，本项目为 2倍），通过非线性激活函数（ReLU），然后再投影回原维度。这增加了模型的非线性表达能力。
+    </div>
+
+    <div class="formula-box">
+        $$ FFN(x) = \max(0, x W_1 + b_1) W_2 + b_2 $$
+        <small>Linear 1 (Expansion) &rarr; ReLU (Activation) &rarr; Linear 2 (Compression)</small>
+    </div>
+
+    <div class="controls">
+        <button onclick="randomizeWeights()">🎲 随机重置权重 (Randomize Weights)</button>
+        <p><small>提示：上下拖动左侧的 <strong>Input</strong> 神经元来改变输入值，观察 ReLU 如何“关闭”负值神经元。</small></p>
+    </div>
+
+    <div class="network-viz" id="viz-container">
+        <svg class="connections" id="connections"></svg>
+
+        <!-- Input Layer -->
+        <div class="layer-column" id="layer-input">
+            <div class="layer-title">Input ($x$)<br><small>d_model=4</small></div>
+            <!-- Generated JS -->
+        </div>
+
+        <!-- Hidden Layer -->
+        <div class="layer-column" id="layer-hidden">
+            <div class="layer-title">Hidden ($h$)<br><small>ReLU(xW1+b1)</small></div>
+            <!-- Generated JS -->
+        </div>
+
+        <!-- Output Layer -->
+        <div class="layer-column" id="layer-output">
+            <div class="layer-title">Output ($y$)<br><small>hW2+b2</small></div>
+            <!-- Generated JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    const dModel = 4;
+    const dHidden = 8; // In this project it's d_model * 2
+    
+    // State
+    let inputs = [1.0, -0.5, 0.8, -1.2];
+    let w1 = []; // dModel x dHidden
+    let b1 = []; // dHidden
+    let w2 = []; // dHidden x dModel
+    let b2 = []; // dModel
+
+    function initWeights() {
+        // Randomize weights between -1 and 1
+        w1 = Array(dModel).fill(0).map(() => Array(dHidden).fill(0).map(() => (Math.random() * 2 - 1).toFixed(2)));
+        b1 = Array(dHidden).fill(0).map(() => (Math.random() * 1 - 0.5).toFixed(2));
+        
+        w2 = Array(dHidden).fill(0).map(() => Array(dModel).fill(0).map(() => (Math.random() * 2 - 1).toFixed(2)));
+        b2 = Array(dModel).fill(0).map(() => (Math.random() * 1 - 0.5).toFixed(2));
+    }
+
+    function createNeurons() {
+        const inputLayer = document.getElementById('layer-input');
+        const hiddenLayer = document.getElementById('layer-hidden');
+        const outputLayer = document.getElementById('layer-output');
+        
+        inputLayer.innerHTML = '<div class="layer-title">Input ($x$)<br><small>d_model=4</small></div>';
+        hiddenLayer.innerHTML = '<div class="layer-title">Hidden ($h$)<br><small>ReLU(xW1+b1)</small></div>';
+        outputLayer.innerHTML = '<div class="layer-title">Output ($y$)<br><small>hW2+b2</small></div>';
+
+        // Input Neurons
+        inputs.forEach((val, i) => {
+            const el = document.createElement('div');
+            el.className = 'neuron input';
+            el.id = `in-${i}`;
+            el.textContent = val.toFixed(1);
+            
+            // Drag logic
+            let startY, startVal;
+            el.onmousedown = (e) => {
+                e.preventDefault();
+                startY = e.clientY;
+                startVal = inputs[i];
+                const onMove = (ev) => {
+                    requestAnimationFrame(() => {
+                        const diff = startY - ev.clientY;
+                        let newVal = startVal + diff / 20;
+                        newVal = Math.max(-5, Math.min(5, newVal));
+                        inputs[i] = newVal;
+                        el.textContent = newVal.toFixed(1);
+                        update();
+                    });
+                };
+                const onUp = () => {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                };
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            };
+            
+            inputLayer.appendChild(el);
+        });
+
+        // Hidden Neurons
+        for(let i=0; i<dHidden; i++) {
+            const el = document.createElement('div');
+            el.className = 'neuron hidden';
+            el.id = `hid-${i}`;
+            el.innerHTML = `0.0<div class="relu-badge">0</div>`;
+            hiddenLayer.appendChild(el);
+        }
+
+        // Output Neurons
+        for(let i=0; i<dModel; i++) {
+            const el = document.createElement('div');
+            el.className = 'neuron output';
+            el.id = `out-${i}`;
+            el.textContent = '0.0';
+            outputLayer.appendChild(el);
+        }
+    }
+
+    function drawConnections() {
+        const svg = document.getElementById('connections');
+        svg.innerHTML = '';
+        
+        const inputRects = inputs.map((_, i) => document.getElementById(`in-${i}`).getBoundingClientRect());
+        const hiddenRects = Array(dHidden).fill(0).map((_, i) => document.getElementById(`hid-${i}`).getBoundingClientRect());
+        const outputRects = Array(dModel).fill(0).map((_, i) => document.getElementById(`out-${i}`).getBoundingClientRect());
+        const containerRect = document.getElementById('viz-container').getBoundingClientRect();
+
+        // Input -> Hidden
+        for(let i=0; i<dModel; i++) {
+            for(let j=0; j<dHidden; j++) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', inputRects[i].right - containerRect.left);
+                line.setAttribute('y1', inputRects[i].top + inputRects[i].height/2 - containerRect.top);
+                line.setAttribute('x2', hiddenRects[j].left - containerRect.left);
+                line.setAttribute('y2', hiddenRects[j].top + hiddenRects[j].height/2 - containerRect.top);
+                line.setAttribute('class', 'connection-line');
+                line.id = `line-in-${i}-hid-${j}`;
+                svg.appendChild(line);
+            }
+        }
+
+        // Hidden -> Output
+        for(let i=0; i<dHidden; i++) {
+            for(let j=0; j<dModel; j++) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', hiddenRects[i].right - containerRect.left);
+                line.setAttribute('y1', hiddenRects[i].top + hiddenRects[i].height/2 - containerRect.top);
+                line.setAttribute('x2', outputRects[j].left - containerRect.left);
+                line.setAttribute('y2', outputRects[j].top + outputRects[j].height/2 - containerRect.top);
+                line.setAttribute('class', 'connection-line');
+                line.id = `line-hid-${i}-out-${j}`;
+                svg.appendChild(line);
+            }
+        }
+    }
+
+    function update() {
+        // 1. Calculate Hidden (Linear + ReLU)
+        const hiddenVals = [];
+        for(let j=0; j<dHidden; j++) {
+            let sum = parseFloat(b1[j]);
+            for(let i=0; i<dModel; i++) {
+                sum += inputs[i] * parseFloat(w1[i][j]);
+                
+                // Visualize weight strength? Maybe too messy.
+                // Let's highlight strong connections based on input * weight
+                const contribution = Math.abs(inputs[i] * parseFloat(w1[i][j]));
+                const line = document.getElementById(`line-in-${i}-hid-${j}`);
+                if(line) {
+                    line.style.opacity = Math.min(contribution, 1) * 0.5 + 0.1;
+                    line.style.strokeWidth = Math.min(contribution, 2) + 0.5;
+                }
+            }
+            
+            const el = document.getElementById(`hid-${j}`);
+            
+            // Apply ReLU
+            if (sum > 0) {
+                hiddenVals.push(sum);
+                el.classList.remove('dead');
+                el.classList.add('active');
+                el.firstChild.textContent = sum.toFixed(1);
+            } else {
+                hiddenVals.push(0);
+                el.classList.add('dead');
+                el.classList.remove('active');
+                el.firstChild.textContent = "0.0";
+            }
+        }
+
+        // 2. Calculate Output
+        for(let j=0; j<dModel; j++) {
+            let sum = parseFloat(b2[j]);
+            for(let i=0; i<dHidden; i++) {
+                sum += hiddenVals[i] * parseFloat(w2[i][j]);
+                
+                const contribution = Math.abs(hiddenVals[i] * parseFloat(w2[i][j]));
+                const line = document.getElementById(`line-hid-${i}-out-${j}`);
+                if(line) {
+                    // If hidden is dead (0), connection is effectively dead
+                    if (hiddenVals[i] === 0) {
+                        line.style.opacity = 0.1;
+                        line.style.strokeWidth = 1;
+                    } else {
+                        line.style.opacity = Math.min(contribution, 1) * 0.5 + 0.1;
+                        line.style.strokeWidth = Math.min(contribution, 2) + 0.5;
+                    }
+                }
+            }
+            
+            const el = document.getElementById(`out-${j}`);
+            el.textContent = sum.toFixed(1);
+        }
+    }
+
+    function randomizeWeights() {
+        initWeights();
+        update();
+    }
+
+    // Init
+    initWeights();
+    createNeurons();
+    // Wait for layout
+    setTimeout(() => {
+        drawConnections();
+        update();
+    }, 100);
+
+    window.onresize = () => {
+        drawConnections();
+        update();
+    };
+
+</script>
+</body>
+</html>

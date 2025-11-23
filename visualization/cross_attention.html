@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Transformer - Cross Attention 可视化</title>
+    <style>
+        :root {
+            --enc-color: #4a90e2; /* Blue for Encoder */
+            --dec-color: #e74c3c; /* Red for Decoder */
+            --attn-color: #9b59b6; /* Purple for Attention */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: #2c3e50; }
+
+        .explanation {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 5px solid var(--attn-color);
+            border-radius: 4px;
+        }
+
+        .viz-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            position: relative;
+            height: 400px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 150px;
+            align-items: center;
+        }
+
+        .token-box {
+            width: 120px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .enc-token { background-color: var(--enc-color); }
+        .dec-token { background-color: var(--dec-color); border: 2px solid #c0392b; }
+
+        .attn-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: var(--attn-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        button:hover { background: #8e44ad; }
+
+        .score-display {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔀 Cross Attention (交叉注意力)</h1>
+    <p>对应代码: <code>src/transformer/decoder.py</code> 中的 <code>self.cross_attn(x, enc_output, enc_output)</code></p>
+
+    <div class="explanation">
+        <strong>连接 Encoder 和 Decoder 的桥梁。</strong>
+        <br>
+        Decoder (红色) 提供 <strong>Query</strong> (我想查询什么？)，Encoder (蓝色) 提供 <strong>Key</strong> 和 <strong>Value</strong> (源句子的信息)。
+        <br>
+        在这个例子中，我们正在翻译 "I love AI" -> "J'aime l'IA"。当前 Decoder 正在生成 "J'" (I)。
+    </div>
+
+    <div class="viz-area" id="viz-area">
+        <!-- Encoder Output (Keys/Values) -->
+        <div class="column" id="encoder-col">
+            <div style="font-weight:bold; margin-bottom:10px; color:var(--enc-color)">Encoder Output (K, V)</div>
+            <div class="token-box enc-token" id="enc-0">I</div>
+            <div class="token-box enc-token" id="enc-1">love</div>
+            <div class="token-box enc-token" id="enc-2">AI</div>
+        </div>
+
+        <!-- Attention Weights Visualization -->
+        <svg class="attn-lines" id="attn-svg"></svg>
+
+        <!-- Decoder Input (Query) -->
+        <div class="column" id="decoder-col">
+            <div style="font-weight:bold; margin-bottom:10px; color:var(--dec-color)">Decoder Input (Q)</div>
+            <div class="token-box dec-token" id="dec-0">J' (Start)</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="step()">Next Step: Generate 'aime'</button>
+        <p id="status-text" style="margin-top: 10px; color: #666;">Current: Decoder is focusing on "I" to generate "J'".</p>
+    </div>
+</div>
+
+<script>
+    const encTokens = ["I", "love", "AI"];
+    const decSteps = [
+        { token: "J'", focus: [0.8, 0.1, 0.1], desc: "Focusing on 'I' to generate 'J''" },
+        { token: "aime", focus: [0.1, 0.8, 0.1], desc: "Focusing on 'love' to generate 'aime'" },
+        { token: "l'IA", focus: [0.1, 0.1, 0.8], desc: "Focusing on 'AI' to generate 'l'IA'" }
+    ];
+
+    let currentStep = 0;
+
+    function render() {
+        const svg = document.getElementById('attn-svg');
+        svg.innerHTML = ''; // Clear lines
+
+        const decBox = document.getElementById('dec-0');
+        const stepData = decSteps[currentStep];
+
+        // Update Decoder Token Text
+        decBox.textContent = stepData.token;
+        document.getElementById('status-text').textContent = stepData.desc;
+
+        // Get coordinates
+        const decRect = decBox.getBoundingClientRect();
+        const containerRect = document.getElementById('viz-area').getBoundingClientRect();
+        
+        const decX = decRect.left - containerRect.left;
+        const decY = decRect.top - containerRect.top + decRect.height/2;
+
+        // Draw lines to Encoder tokens
+        encTokens.forEach((token, i) => {
+            const encBox = document.getElementById(`enc-${i}`);
+            const encRect = encBox.getBoundingClientRect();
+            
+            const encX = encRect.right - containerRect.left;
+            const encY = encRect.top - containerRect.top + encRect.height/2;
+
+            const weight = stepData.focus[i];
+            
+            // Draw Line
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", encX);
+            line.setAttribute("y1", encY);
+            line.setAttribute("x2", decX);
+            line.setAttribute("y2", decY);
+            line.setAttribute("stroke", "rgba(155, 89, 182, " + (weight * 1.5) + ")"); // Purple with opacity
+            line.setAttribute("stroke-width", weight * 10 + 1);
+            
+            svg.appendChild(line);
+
+            // Highlight Encoder Box
+            encBox.style.opacity = 0.5 + weight * 0.5;
+            encBox.style.transform = `scale(${1 + weight * 0.2})`;
+        });
+    }
+
+    function step() {
+        currentStep = (currentStep + 1) % decSteps.length;
+        render();
+    }
+
+    // Initial render
+    window.onload = render;
+    window.onresize = render;
+
+</script>
+</body>
+</html>
